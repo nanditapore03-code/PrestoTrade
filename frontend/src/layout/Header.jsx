@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight, ChevronDown, Menu, X, Search, User, Mail, Phone, MapPin, Award, Shield, Gem, Clock, Heart, ShoppingBag, LogIn } from 'lucide-react';
-
+import { useNavigate } from 'react-router-dom';
 
 const messages = [
   "✨ FREE SHIPPING WORLDWIDE ✨",
@@ -45,10 +45,31 @@ const messages = [
 
 
 const Header = () => {
+  const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeMenu, setActiveMenu] = useState(null);
   const [mobileExpandedMenu, setMobileExpandedMenu] = useState(null);
+
+const handleNavigation = (title) => {
+  const lowerTitle = title.toLowerCase();
+  // console.log(lowerTitle);
+
+  if (lowerTitle === "diamonds") {
+    navigate("/diamonds");
+    setMenuOpen(false);
+  } else if (lowerTitle === "jewelry") {
+    navigate("/jewelry");
+    setMenuOpen(false);
+  } else if (lowerTitle === "rings") {
+    navigate("/jewelry/rings");
+    setMenuOpen(false);
+  } else {
+    navigate("/");
+    setMenuOpen(false);
+  }
+};
+
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -449,14 +470,19 @@ const Header = () => {
                   </div> */}
 
                   {/* Main Navigation */}
-                  <nav className="space-y-2">
+                  <nav className="space-y-2 overflow-x-auto">
                     {Object.keys(menuData).map((key) => (
                       <div key={key} className="border-b">
                         <button
                           onClick={() => toggleMobileSubmenu(key)}
                           className="flex items-center justify-between w-full py-4 text-sm tracking-wider hover:opacity-60 transition-opacity"
                         >
-                          <span className="capitalize font-medium">{menuData[key].title}</span>
+                      <span
+      className="capitalize font-medium cursor-pointer hover:text-black transition-colors"
+      onClick={() => handleNavigation(menuData[key].title)}
+    >
+      {menuData[key].title}
+    </span>
                           <motion.div
                             animate={{ rotate: mobileExpandedMenu === key ? 180 : 0 }}
                             transition={{ duration: 0.3 }}
@@ -544,8 +570,8 @@ const Header = () => {
                       <span>Contact Us</span>
                     </motion.a>
                   </div> */}
-                  
-                <div className="absolute w-[90%] bottom-4 left-0 flex items-center justify-center">
+                  {/* <div className='mt-20 fixed bg-white bottom-10 left-0 h-9'></div> */}
+                <div className=" fixed w-[75%] bg-white bottom-4 left-0 right-0 flex z-50 items-center justify-center">
       <motion.button
         whileHover={{ x: 4 }}
         
