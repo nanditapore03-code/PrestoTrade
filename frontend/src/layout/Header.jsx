@@ -53,22 +53,22 @@ const Header = () => {
 
 const handleNavigation = (title) => {
   const lowerTitle = title.toLowerCase();
-  // console.log(lowerTitle);
 
   if (lowerTitle === "diamonds") {
     navigate("/diamonds");
-    setMenuOpen(false);
   } else if (lowerTitle === "jewelry") {
     navigate("/jewelry");
-    setMenuOpen(false);
   } else if (lowerTitle === "rings") {
     navigate("/jewelry/rings");
-    setMenuOpen(false);
   } else {
     navigate("/");
-    setMenuOpen(false);
   }
+
+  // Close menu and scroll to top
+  setMenuOpen(false);
+  window.scrollTo({ top: 0, behavior: "smooth" });
 };
+
 
 
   useEffect(() => {

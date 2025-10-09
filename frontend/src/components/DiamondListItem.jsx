@@ -8,6 +8,8 @@ const DiamondListItem = ({ diamond, isFavorite, onToggleFavorite, index }) => {
 
   const handleViewDetails = () => {
     navigate(`/diamonds/${diamond.id}`);
+    
+  window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (

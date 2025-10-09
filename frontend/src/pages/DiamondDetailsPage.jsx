@@ -34,6 +34,7 @@ const DiamondDetailsPage = () => {
     const navigate = useNavigate();
   const backToDiamonds = () => {
     navigate('/diamonds');
+      window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const images = diamond.images?.gallery || [diamond.images?.main];
@@ -53,6 +54,7 @@ const DiamondDetailsPage = () => {
       <nav className="flex items-center text-sm text-gray-500">
         <span
           onClick={() => navigate("/")}
+          
           className="cursor-pointer hover:text-gray-900 transition-colors"
         >
           Home
