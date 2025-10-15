@@ -50,6 +50,14 @@ const Header = () => {
   const [scrolled, setScrolled] = useState(false);
   const [activeMenu, setActiveMenu] = useState(null);
   const [mobileExpandedMenu, setMobileExpandedMenu] = useState(null);
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIndex((prev) => (prev + 1) % messages.length);
+    }, 3000); // change message every 3 seconds
+    return () => clearInterval(interval);
+  }, []);
 
 const handleNavigation = (title) => {
   const lowerTitle = title.toLowerCase();
@@ -274,26 +282,34 @@ const handleNavigation = (title) => {
       <motion.header 
         initial={{ y: -100 }}
         animate={{ y: 0 }}
-        className={`fixed top-0 w-full z-50 transition-all duration-300 bg-white shadow-sm shadow-gray-300 ${
+        className={`fixed top-0 w-full z-50  transition-all duration-300 bg-white shadow-sm shadow-gray-300 ${
           scrolled ? '' : ''
         }`}
       >
-
-        <div className="mx-auto px-6 md:px-12 py-5 flex items-center justify-between">
-          <button className="lg:hidden z-50" onClick={() => setMenuOpen(!menuOpen)}>
+   
+        <div className="w-full px-6 md:px-6 py-5 gap-4 flex flex-col">
+           <motion.div 
+            whileHover={{ opacity: 0.6 }}
+            className={`text-base text-center text-nowrap md:text-xl font-medium tracking-[0.3em] absolute left-1/2 -translate-x-1/2 lg:relative lg:left-0 lg:translate-x-0 ${scrolled ? 'hidden' : ''}`}
+          >
+            
+            <a href="/">PRESTO TRADE</a>
+          </motion.div>
+          <div className='flex items-center justify-between'>
+ <button className="lg:hidden z-50" onClick={() => setMenuOpen(!menuOpen)}>
             {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
             <Search className="w-5 h-5 md:hidden absolute left-16" />
           
           <motion.div 
             whileHover={{ opacity: 0.6 }}
-            className="text-base text-nowrap md:text-xl font-medium tracking-[0.3em] absolute left-1/2 -translate-x-1/2 lg:relative lg:left-0 lg:translate-x-0"
+            className={`text-base text-nowrap  md:text-xl font-medium tracking-[0.3em] absolute left-1/2 -translate-x-1/2 lg:relative lg:left-0 lg:translate-x-0 ${scrolled ? '' : 'hidden'}`}
           >
             
             <a href="/">PRESTO TRADE</a>
           </motion.div>
 
-          <nav className="hidden lg:flex items-center space-x-12 text-sm tracking-wider">
+          <nav className="hidden ml-20 w-full justify-center lg:flex items-center space-x-12 text-sm tracking-wider">
             {Object.keys(menuData).map((key) => (
               <div
                 key={key}
@@ -303,7 +319,7 @@ const handleNavigation = (title) => {
                 >
                 <a 
                   href={menuData[key].path} 
-                  className="relative   transition-opacity capitalize inline-block"
+                  className="relative font-normal text-gray-800 tracking-[0.2em] transition-opacity capitalize inline-block"
                 >
                   {menuData[key].title}
                   <motion.div
@@ -331,7 +347,10 @@ const handleNavigation = (title) => {
               <ShoppingBag className="w-5 h-5" />
             </button>
           </div>
+          </div>
+         
         </div>
+    
 
         {/* Desktop Mega Menu */}
         <AnimatePresence>
