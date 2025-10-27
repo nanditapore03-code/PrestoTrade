@@ -312,12 +312,12 @@ const JewelryDetailPage = () => {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.6, delay: idx * 0.1 }}
-                  className="bg-gray-50"
+                  className="bg-stone-100 aspect-[4/5]"
                 >
                   <img
                     src={idx === 0 ? currentImages.main : currentImages.hover}
                     alt={`${product.name} ${idx + 1}`}
-                    className="w-full aspect-[4/5] object-cover"
+                    className="w-full  object-cover"
                   />
                 </motion.div>
               ))}

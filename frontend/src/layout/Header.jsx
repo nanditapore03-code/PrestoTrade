@@ -21,46 +21,9 @@ import {
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import presto_name_logo from "../assets/presto_name_logo.jpg";
-import presto_logo from "../assets/presto_logo.jpg";
+import presto_logo from "../assets/presto_logo.png";
 
-const messages = [
-  "✨ FREE SHIPPING WORLDWIDE ✨",
-  "💎 PREMIUM QUALITY GUARANTEED 💎",
-  "⚡ NEW COLLECTION DROPPING SOON ⚡",
-];
-function AnnouncementBar() {
-  const [index, setIndex] = useState(0);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setIndex((prev) => (prev + 1) % messages.length);
-    }, 3000); // change message every 3 seconds
-    return () => clearInterval(interval);
-  }, []);
-
-  return (
-    <div className="relative bg-gray-900 text-white">
-      {/* Persistent line */}
-      <div className="absolute bottom-0 left-0 w-full h-[3px] bg-yellow-400" />
-
-      {/* Animated text */}
-      <div className="h-10 flex items-center justify-center text-xs sm:text-sm tracking-wider font-light relative z-10">
-        <AnimatePresence mode="wait">
-          <motion.span
-            key={index}
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 10 }}
-            transition={{ duration: 0.5, ease: "easeInOut" }}
-            className="inline-block"
-          >
-            {messages[index]}
-          </motion.span>
-        </AnimatePresence>
-      </div>
-    </div>
-  );
-}
 
 const Header = () => {
   const navigate = useNavigate();
@@ -70,12 +33,12 @@ const Header = () => {
   const [mobileExpandedMenu, setMobileExpandedMenu] = useState(null);
   const [index, setIndex] = useState(0);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setIndex((prev) => (prev + 1) % messages.length);
-    }, 3000); // change message every 3 seconds
-    return () => clearInterval(interval);
-  }, []);
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     setIndex((prev) => (prev + 1) % messages.length);
+  //   }, 3000); // change message every 3 seconds
+  //   return () => clearInterval(interval);
+  // }, []);
 
   const handleNavigation = (title) => {
     const lowerTitle = title.toLowerCase();
@@ -100,6 +63,47 @@ const Header = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+
+  const AnnouncementBar=() =>{
+  const [index, setIndex] = useState(0);
+
+const messages = [
+  "✨ FREE SHIPPING WORLDWIDE ✨",
+  "💎 PREMIUM QUALITY GUARANTEED 💎",
+  "⚡ NEW COLLECTION DROPPING SOON ⚡",
+];
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIndex((prev) => (prev + 1) % messages.length);
+    }, 3000); // change message every 3 seconds
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div className={`relative  bg-[#000B58] text-white ${scrolled ? "hidden":""}`}>
+      {/* <div className="absolute bottom-0 left-0 w-full h-[3px] bg-red-600/40" /> */}
+      {/* Persistent line */}
+
+      {/* Animated text */}
+<div className="h-10 flex items-center justify-center text-xs sm:text-sm tracking-wider font-light relative z-10">
+  <AnimatePresence mode="wait">
+    <motion.span
+      key={index}
+      initial={{ opacity: 0, x: 50 }}      
+      animate={{ opacity: 1, x: 0 }} 
+      exit={{ opacity: 0, x: -50 }}   
+      transition={{ duration: 0.5, ease: "easeInOut" }}
+      className="inline-block whitespace-nowrap"
+    >
+      {messages[index]}
+    </motion.span>
+  </AnimatePresence>
+</div>
+
+    </div>
+  );
+}
 
   // Prevent body scroll when mobile menu is open
   useEffect(() => {
@@ -349,59 +353,94 @@ const Header = () => {
 
   return (
     <>
-      {/* <AnnouncementBar /> */}
 
       <motion.header
         initial={{ y: -100 }}
         animate={{ y: 0 }}
-        className={` w-full z-50  transition-all duration-300 bg-white shadow-sm shadow-gray-300 ${
-          scrolled ? "fixed top-0" : ""
-        }`}
+        className={` w-full z-50  transition-all duration-300 bg-white shadow-sm shadow-gray-300 
+          ${scrolled ? "fixed top-0" : ""}
+          `}
       >
-        <div className="w-full px-6 md:px-6 py-4 gap-4 flex flex-col">
-          <motion.div
+          <AnnouncementBar className={`${scrolled ? "hidden": ""}`}/>
+        <div className="w-full px-6 md:px-10 py-4 gap-4 flex flex-col">
+          {/* <motion.div
             // whileHover={{ opacity: 0.6 }}
-            className={`text-base items-center justify-center flex text-center text-nowrap md:text-xl font-medium tracking-[0.3em] absolute left-1/2 -translate-x-1/2 lg:relative lg:left-0 lg:translate-x-0 ${
+            className={`text-base items-center justify-center flex text-center text-nowrap md:text-xl font-medium tracking-[0.05em] absolute left-1/2 -translate-x-1/2 lg:relative lg:left-0 lg:translate-x-0 ${
               scrolled ? "hidden" : ""
             }`}
           >
-            <a href="/">
+            <a className="flex flex-col items-center " href="/">
+            <div className="flex gap-1 md:gap-2 md:py-2 items-center">
+
               <img
-                className="w-44 items-center"
-                src={presto_name_logo}
+                className="md:w-8 w-6 items-center "
+                src={presto_logo}
                 alt=""
-              />
+                />
+              <span className="text-yellow-600/60  uppercase text-lg md:text-3xl  font-serif">Presto Trade</span>
+                </div>
+              <span className={`text-yellow-600/60 uppercase hidden md:block font-medium text-xs md:text-sm  ${scrolled ? "hidden":""}`}>
+Fine Jewelry & Fancy Shape Diamonds
+              </span>
             </a>
-          </motion.div>
+          </motion.div> */}
           <div className="flex items-center justify-between">
             <button
               className="lg:hidden z-50"
               onClick={() => setMenuOpen(!menuOpen)}
             >
               {menuOpen ? (
-                <X className="w-6 h-6" />
+                <X className="w-6 h-6 text-royalblue" />
               ) : (
-                <Menu className="w-6 h-6" />
+                <Menu className="w-6 h-6 text-royalblue" />
               )}
             </button>
-            <Search className="w-5 h-5 md:hidden absolute left-16" />
+            <Search className="w-5 h-5 md:hidden absolute left-16 text-royalblue" />
 
             <motion.div
               whileHover={{ opacity: 0.6 }}
-              className={`text-base text-nowrap  md:text-xl font-medium tracking-[0.3em] absolute left-1/2 -translate-x-1/2 lg:relative lg:left-0 lg:translate-x-0 ${
-                scrolled ? "" : "hidden"
-              }`}
+              className={`text-base text-nowrap  md:text-xl font-medium tracking-[0.05em] absolute left-1/2 -translate-x-1/2 lg:relative lg:left-0 lg:translate-x-0 `}
             >
-              <a href="/">
+              {/* <a href="/">
                 <img
-                  className="w-40 items-center"
+                  className="w-48 items-center"
                   src={presto_name_logo}
                   alt=""
                 />
-              </a>
+              </a> */}
+               <a className="flex flex-col items-start justify-start " href="/">
+            <div className="flex gap-1 md:gap-2 py-1 justify-between items-center">
+
+              <img
+                className="w-8 md:w-12 items-center justify-start"
+                src={presto_logo}
+                alt=""
+                />
+                <div className="flex flex-col">
+
+              <span className="text-[#000B58] text-left uppercase text-lg md:text-2xl  font-serif">Presto Trade</span>
+              <span className={`text-[#000B58]  hidden md:block text-left uppercase font-medium md:text-xs  `}>
+Fine Jewelry & Fancy Shape Diamonds
+              </span>
+                </div>
+                </div>
+            </a>
             </motion.div>
 
-            <nav className="hidden ml-20 w-full justify-center lg:flex items-center space-x-12 text-sm tracking-wider">
+              
+            <nav className="hidden mr-28 justify-center lg:flex items-center space-x-12 text-sm uppercase tracking-wider">
+               {/* <Link
+                    to="/"
+                    className="relative font-medium text-gray-800 tracking-[0.1em] transition-opacity  inline-block"
+                  >
+           Home
+                    <motion.div
+                      className="absolute -bottom-2 left-0 right-0 h-0.5 bg-gray-700 origin-left"
+                      initial={{ scaleX: 0 }}
+                      // animate={{ scaleX: activeMenu === key ? 1 : 0 }}
+                      transition={{ duration: 0.3, ease: "easeOut" }}
+                    />
+                  </Link> */}
               {Object.keys(menuData).map((key) => (
                 <div
                   key={key}
@@ -411,7 +450,7 @@ const Header = () => {
                 >
                   <Link
                     to={menuData[key].path}
-                    className="relative font-medium text-gray-800 tracking-[0.2em] transition-opacity capitalize inline-block"
+                    className="relative font-normal text-gray-800 tracking-[0.1em] transition-opacity  inline-block"
                   >
                     {menuData[key].title}
                     <motion.div
@@ -425,18 +464,18 @@ const Header = () => {
               ))}
             </nav>
 
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-4 text-[#000B58] ">
               <button className="hover:opacity-60 transition-opacity hidden md:block">
-                <Search className="w-5 h-5" />
+                <Search className="w-6 h-6" />
               </button>
               <button className="hover:opacity-60 hidden md:block transition-opacity">
-                <User className="w-5 h-5" />
+                <User className="w-6 h-6" />
               </button>
               <button className="hover:opacity-60 transition-opacity">
-                <Heart className="w-5 h-5" />
+                <Heart className="w-6 h-6" />
               </button>
               <button className="hover:opacity-60 transition-opacity">
-                <ShoppingBag className="w-5 h-5" />
+                <ShoppingBag className="w-6 h-6" />
               </button>
             </div>
           </div>
@@ -450,12 +489,13 @@ const Header = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.3, ease: "easeOut" }}
-              className="absolute top-full left-0 w-full bg-white border-t shadow-2xl"
+              className={`absolute ${scrolled ?"top-full":"top-32"} left-0 w-full bg-white border-t shadow-2xl`}
               onMouseEnter={() => setActiveMenu(activeMenu)}
               onMouseLeave={() => setActiveMenu(null)}
             >
               <div className="max-w-7xl mx-auto px-12 py-12">
                 <div className="grid grid-cols-4 gap-12">
+     
                   {menuData[activeMenu].sections.map((section, idx) => (
                     <motion.div
                       key={idx}
@@ -580,6 +620,7 @@ const Header = () => {
 
                   {/* Main Navigation */}
                   <nav className="space-y-2 overflow-x-auto">
+       
                     {Object.keys(menuData).map((key) => (
                       <div key={key} className="border-b">
                         <button

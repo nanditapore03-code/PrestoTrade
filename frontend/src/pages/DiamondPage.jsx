@@ -1,4 +1,4 @@
-import React, { useState,useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Grid, List, Search } from "lucide-react";
 import DiamondCard from "../components/DiamondCard";
@@ -12,6 +12,129 @@ import {
   getColorsForShape,
   getClaritiesForColor,
 } from "./DiamondData";
+import round from "../assets/images/SHAPE_01.png";
+import princess from "../assets/images/SHAPE_01.png";
+import oval from "../assets/images/SHAPE_01.png";
+import normal from "../assets/images/SHAPE_01.png";
+
+const shapeMap = { round, princess, oval, normal };
+
+// Range Slider Component
+const RangeSlider = ({ min, max, values, onChange, labels, unit = "" }) => {
+  const [localValues, setLocalValues] = useState(values);
+
+  useEffect(() => {
+    setLocalValues(values);
+  }, [values]);
+
+  const getIndexFromValue = (value) => {
+    if (!labels) return value;
+    return labels.indexOf(value);
+  };
+
+  const getValueFromIndex = (index) => {
+    if (!labels) return index;
+    return labels[index];
+  };
+
+  const handleMinChange = (e) => {
+    const index = parseFloat(e.target.value);
+    const value = labels ? getValueFromIndex(Math.round(index)) : index;
+    const maxIndex = labels
+      ? getIndexFromValue(localValues[1])
+      : localValues[1];
+
+    if (labels ? Math.round(index) <= maxIndex : index <= maxIndex) {
+      const newValues = [value, localValues[1]];
+      setLocalValues(newValues);
+      onChange(newValues);
+    }
+  };
+
+  const handleMaxChange = (e) => {
+    const index = parseFloat(e.target.value);
+    const value = labels ? getValueFromIndex(Math.round(index)) : index;
+    const minIndex = labels
+      ? getIndexFromValue(localValues[0])
+      : localValues[0];
+
+    if (labels ? Math.round(index) >= minIndex : index >= minIndex) {
+      const newValues = [localValues[0], value];
+      setLocalValues(newValues);
+      onChange(newValues);
+    }
+  };
+
+  const minIndex = labels ? getIndexFromValue(localValues[0]) : localValues[0];
+  const maxIndex = labels ? getIndexFromValue(localValues[1]) : localValues[1];
+  const totalSteps = labels ? labels.length - 1 : max - min;
+
+  return (
+    <div className="space-y-3">
+      <div className="flex justify-between text-xs text-gray-600 mb-2">
+        <span>
+          Min: {unit}
+          {localValues[0]}
+        </span>
+        <span>
+          Max: {unit}
+          {localValues[1]}
+        </span>
+      </div>
+
+      <div className="relative h-8 px-2">
+        {/* Labels underneath */}
+        {labels && (
+          <div className="absolute w-full flex justify-between text-[10px] text-gray-500 top-8">
+            {labels.map((label, idx) => (
+              <span
+                key={label}
+                className={idx % 2 === 0 ? "block" : "hidden sm:block"}
+              >
+                {label}
+              </span>
+            ))}
+          </div>
+        )}
+
+        {/* Track */}
+        <div className="absolute w-full h-1 bg-gray-200 rounded-lg top-3">
+          <div
+            className="absolute h-full bg-gray-900 rounded-lg"
+            style={{
+              left: `${(minIndex / totalSteps) * 100}%`,
+              right: `${100 - (maxIndex / totalSteps) * 100}%`,
+            }}
+          />
+        </div>
+
+        {/* Min slider */}
+        <input
+          type="range"
+          min={labels ? 0 : min}
+          max={labels ? labels.length - 1 : max}
+          step={labels ? 1 : 0.01}
+          value={minIndex}
+          onChange={handleMinChange}
+          className="absolute w-full h-1 top-3 bg-transparent appearance-none cursor-pointer pointer-events-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-gray-900 [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-gray-900 [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:shadow-md hover:[&::-webkit-slider-thumb]:scale-110 [&::-webkit-slider-thumb]:transition-transform"
+          style={{ zIndex: minIndex > totalSteps / 2 ? 5 : 3 }}
+        />
+
+        {/* Max slider */}
+        <input
+          type="range"
+          min={labels ? 0 : min}
+          max={labels ? labels.length - 1 : max}
+          step={labels ? 1 : 0.01}
+          value={maxIndex}
+          onChange={handleMaxChange}
+          className="absolute w-full h-1 top-3 bg-transparent appearance-none cursor-pointer pointer-events-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-gray-900 [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-gray-900 [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:shadow-md hover:[&::-webkit-slider-thumb]:scale-110 [&::-webkit-slider-thumb]:transition-transform"
+          style={{ zIndex: 4 }}
+        />
+      </div>
+    </div>
+  );
+};
 
 const DiamondPage = () => {
   const [viewMode, setViewMode] = useState("list");
@@ -19,65 +142,38 @@ const DiamondPage = () => {
   const [sortBy, setSortBy] = useState("carat-asc");
   const [favorites, setFavorites] = useState([]);
 
-  // Selection states
   const [selectedType, setSelectedType] = useState("Natural");
   const [selectedCategory, setSelectedCategory] = useState("natural-melee");
   const [selectedSubcategory, setSelectedSubcategory] = useState("Standard");
   const [selectedShape, setSelectedShape] = useState("Round");
-  // Remove the toggleSection function and replace useEffect with this:
-useEffect(() => {
-  const handleResize = () => {
-    const isDesktop = window.innerWidth >= 768;
-    if (isDesktop) {
-      setOpenSections({
-        colorClarity: true,
-        caratPrice: true,
-        cut: true,
-        polishSymmetry: true,
-        fluorescenceCert: true,
-      });
-    }
-  };
-
-  handleResize(); // Run on mount
-  window.addEventListener('resize', handleResize);
-  return () => window.removeEventListener('resize', handleResize);
-}, []);
-
-// Add this handler function (replaces the old one)
-const handleToggle = (section, e) => {
-  const isDesktop = window.innerWidth >= 768;
-  
-  if (isDesktop) {
-    // Prevent default toggle behavior on desktop
-    e.preventDefault();
-    e.stopPropagation();
-    return;
-  }
-  
-  // Allow toggle on mobile
-  setOpenSections((prev) => ({
-    ...prev,
-    [section]: e.target.open,
-  }));
-};
 
   const [openSections, setOpenSections] = useState({
     colorClarity: true,
     caratPrice: true,
-    cut: false,
-    polishSymmetry: false,
-    fluorescenceCert: false,
+    cut: true,
+    polishSymmetry: true,
+    fluorescenceCert: true,
   });
 
-  const toggleSection = (section) => {
-    setOpenSections((prev) => ({
-      ...prev,
-      [section]: !prev[section],
-    }));
-  };
+  useEffect(() => {
+    const handleResize = () => {
+      const isDesktop = window.innerWidth >= 768;
+      if (isDesktop) {
+        setOpenSections({
+          colorClarity: true,
+          caratPrice: true,
+          cut: true,
+          polishSymmetry: true,
+          fluorescenceCert: true,
+        });
+      }
+    };
 
-  // Get available options based on selections
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const categories = useMemo(
     () => getCategoriesForType(selectedType),
     [selectedType]
@@ -129,20 +225,86 @@ const handleToggle = (section, e) => {
     availableColors,
   ]);
 
-  // Filter states
+  // Get all unique clarities from the clarity map
+  const allClarities = useMemo(() => {
+    const claritiesSet = new Set();
+    Object.values(availableClarities).forEach((clarities) => {
+      clarities.forEach((clarity) => claritiesSet.add(clarity));
+    });
+    return Array.from(claritiesSet);
+  }, [availableClarities]);
+
   const [filters, setFilters] = useState({
-    colorClarity: {},
-    cut: [],
-    polish: [],
-    symmetry: [],
-    fluorescence: [],
+    color:
+      availableColors.length > 0
+        ? [availableColors[0], availableColors[availableColors.length - 1]]
+        : [],
+    clarity:
+      allClarities.length > 0
+        ? [allClarities[0], allClarities[allClarities.length - 1]]
+        : [],
+    cut:
+      diamondData.attributes.cut.length > 0
+        ? [
+            diamondData.attributes.cut[0],
+            diamondData.attributes.cut[diamondData.attributes.cut.length - 1],
+          ]
+        : [],
+    polish:
+      diamondData.attributes.polish.length > 0
+        ? [
+            diamondData.attributes.polish[0],
+            diamondData.attributes.polish[
+              diamondData.attributes.polish.length - 1
+            ],
+          ]
+        : [],
+    symmetry:
+      diamondData.attributes.symmetry.length > 0
+        ? [
+            diamondData.attributes.symmetry[0],
+            diamondData.attributes.symmetry[
+              diamondData.attributes.symmetry.length - 1
+            ],
+          ]
+        : [],
+    fluorescence:
+      diamondData.attributes.fluorescence.length > 0
+        ? [
+            diamondData.attributes.fluorescence[0],
+            diamondData.attributes.fluorescence[
+              diamondData.attributes.fluorescence.length - 1
+            ],
+          ]
+        : [],
     certification: [],
     caratRange: [0, 10],
     priceRange: [0, 50000],
   });
 
-  // Update shape when available shapes change
-  React.useEffect(() => {
+  // Update filters when available colors/clarities change
+  useEffect(() => {
+    if (availableColors.length > 0) {
+      setFilters((prev) => ({
+        ...prev,
+        color: [
+          availableColors[0],
+          availableColors[availableColors.length - 1],
+        ],
+      }));
+    }
+  }, [availableColors]);
+
+  useEffect(() => {
+    if (allClarities.length > 0) {
+      setFilters((prev) => ({
+        ...prev,
+        clarity: [allClarities[0], allClarities[allClarities.length - 1]],
+      }));
+    }
+  }, [allClarities]);
+
+  useEffect(() => {
     if (
       availableShapes.length > 0 &&
       !availableShapes.includes(selectedShape)
@@ -151,8 +313,7 @@ const handleToggle = (section, e) => {
     }
   }, [availableShapes, selectedShape]);
 
-  // Update subcategory when available subcategories change
-  React.useEffect(() => {
+  useEffect(() => {
     if (subcategories.length > 0) {
       const subcategoryIds = subcategories.map((s) => s.id);
       if (!subcategoryIds.includes(selectedSubcategory)) {
@@ -167,46 +328,59 @@ const handleToggle = (section, e) => {
     );
   };
 
-  const toggleColorClarityFilter = (color, clarity) => {
-    setFilters((prev) => {
-      const currentColorClarity = { ...prev.colorClarity };
-
-      if (!currentColorClarity[color]) {
-        currentColorClarity[color] = [clarity];
-      } else if (currentColorClarity[color].includes(clarity)) {
-        currentColorClarity[color] = currentColorClarity[color].filter(
-          (c) => c !== clarity
-        );
-        if (currentColorClarity[color].length === 0) {
-          delete currentColorClarity[color];
-        }
-      } else {
-        currentColorClarity[color] = [...currentColorClarity[color], clarity];
-      }
-
-      return {
-        ...prev,
-        colorClarity: currentColorClarity,
-      };
-    });
-  };
-
-  const toggleFilter = (filterType, value) => {
+  const toggleCertification = (cert) => {
     setFilters((prev) => ({
       ...prev,
-      [filterType]: prev[filterType].includes(value)
-        ? prev[filterType].filter((v) => v !== value)
-        : [...prev[filterType], value],
+      certification: prev.certification.includes(cert)
+        ? prev.certification.filter((c) => c !== cert)
+        : [...prev.certification, cert],
     }));
   };
 
   const clearFilters = () => {
     setFilters({
-      colorClarity: {},
-      cut: [],
-      polish: [],
-      symmetry: [],
-      fluorescence: [],
+      color:
+        availableColors.length > 0
+          ? [availableColors[0], availableColors[availableColors.length - 1]]
+          : [],
+      clarity:
+        allClarities.length > 0
+          ? [allClarities[0], allClarities[allClarities.length - 1]]
+          : [],
+      cut:
+        diamondData.attributes.cut.length > 0
+          ? [
+              diamondData.attributes.cut[0],
+              diamondData.attributes.cut[diamondData.attributes.cut.length - 1],
+            ]
+          : [],
+      polish:
+        diamondData.attributes.polish.length > 0
+          ? [
+              diamondData.attributes.polish[0],
+              diamondData.attributes.polish[
+                diamondData.attributes.polish.length - 1
+              ],
+            ]
+          : [],
+      symmetry:
+        diamondData.attributes.symmetry.length > 0
+          ? [
+              diamondData.attributes.symmetry[0],
+              diamondData.attributes.symmetry[
+                diamondData.attributes.symmetry.length - 1
+              ],
+            ]
+          : [],
+      fluorescence:
+        diamondData.attributes.fluorescence.length > 0
+          ? [
+              diamondData.attributes.fluorescence[0],
+              diamondData.attributes.fluorescence[
+                diamondData.attributes.fluorescence.length - 1
+              ],
+            ]
+          : [],
       certification: [],
       caratRange: [0, 10],
       priceRange: [0, 50000],
@@ -230,37 +404,91 @@ const handleToggle = (section, e) => {
       );
     }
 
-    // Color-Clarity filter
-    if (Object.keys(filters.colorClarity).length > 0) {
-      result = result.filter((d) => {
-        const selectedClaritiesForColor = filters.colorClarity[d.color];
-        return (
-          selectedClaritiesForColor &&
-          selectedClaritiesForColor.includes(d.clarity)
-        );
-      });
+    // Color filter
+    if (availableColors.length > 0 && filters.color.length === 2) {
+      const colorStartIdx = availableColors.indexOf(filters.color[0]);
+      const colorEndIdx = availableColors.indexOf(filters.color[1]);
+      const selectedColors = availableColors.slice(
+        colorStartIdx,
+        colorEndIdx + 1
+      );
+      result = result.filter((d) => selectedColors.includes(d.color));
+    }
+
+    // Clarity filter
+    if (allClarities.length > 0 && filters.clarity.length === 2) {
+      const clarityStartIdx = allClarities.indexOf(filters.clarity[0]);
+      const clarityEndIdx = allClarities.indexOf(filters.clarity[1]);
+      const selectedClarities = allClarities.slice(
+        clarityStartIdx,
+        clarityEndIdx + 1
+      );
+      result = result.filter((d) => selectedClarities.includes(d.clarity));
     }
 
     // Cut filter
-    if (filters.cut.length > 0) {
-      result = result.filter((d) => filters.cut.includes(d.cut));
+    if (diamondData.attributes.cut.length > 0 && filters.cut.length === 2) {
+      const cutStartIdx = diamondData.attributes.cut.indexOf(filters.cut[0]);
+      const cutEndIdx = diamondData.attributes.cut.indexOf(filters.cut[1]);
+      const selectedCuts = diamondData.attributes.cut.slice(
+        cutStartIdx,
+        cutEndIdx + 1
+      );
+      result = result.filter((d) => selectedCuts.includes(d.cut));
     }
 
     // Polish filter
-    if (filters.polish.length > 0) {
-      result = result.filter((d) => filters.polish.includes(d.polish));
+    if (
+      diamondData.attributes.polish.length > 0 &&
+      filters.polish.length === 2
+    ) {
+      const polishStartIdx = diamondData.attributes.polish.indexOf(
+        filters.polish[0]
+      );
+      const polishEndIdx = diamondData.attributes.polish.indexOf(
+        filters.polish[1]
+      );
+      const selectedPolish = diamondData.attributes.polish.slice(
+        polishStartIdx,
+        polishEndIdx + 1
+      );
+      result = result.filter((d) => selectedPolish.includes(d.polish));
     }
 
     // Symmetry filter
-    if (filters.symmetry.length > 0) {
-      result = result.filter((d) => filters.symmetry.includes(d.symmetry));
+    if (
+      diamondData.attributes.symmetry.length > 0 &&
+      filters.symmetry.length === 2
+    ) {
+      const symmetryStartIdx = diamondData.attributes.symmetry.indexOf(
+        filters.symmetry[0]
+      );
+      const symmetryEndIdx = diamondData.attributes.symmetry.indexOf(
+        filters.symmetry[1]
+      );
+      const selectedSymmetry = diamondData.attributes.symmetry.slice(
+        symmetryStartIdx,
+        symmetryEndIdx + 1
+      );
+      result = result.filter((d) => selectedSymmetry.includes(d.symmetry));
     }
 
     // Fluorescence filter
-    if (filters.fluorescence.length > 0) {
-      result = result.filter((d) =>
-        filters.fluorescence.includes(d.fluorescence)
+    if (
+      diamondData.attributes.fluorescence.length > 0 &&
+      filters.fluorescence.length === 2
+    ) {
+      const fluorStartIdx = diamondData.attributes.fluorescence.indexOf(
+        filters.fluorescence[0]
       );
+      const fluorEndIdx = diamondData.attributes.fluorescence.indexOf(
+        filters.fluorescence[1]
+      );
+      const selectedFluor = diamondData.attributes.fluorescence.slice(
+        fluorStartIdx,
+        fluorEndIdx + 1
+      );
+      result = result.filter((d) => selectedFluor.includes(d.fluorescence));
     }
 
     // Certification filter
@@ -307,114 +535,102 @@ const handleToggle = (section, e) => {
     searchQuery,
     filters,
     sortBy,
+    availableColors,
+    allClarities,
   ]);
 
-  const activeFiltersCount =
-    Object.keys(filters.colorClarity).reduce(
-      (sum, color) => sum + filters.colorClarity[color].length,
-      0
-    ) +
-    filters.cut.length +
-    filters.polish.length +
-    filters.symmetry.length +
-    filters.fluorescence.length +
-    filters.certification.length;
+  const activeFiltersCount = filters.certification.length;
 
   return (
-    <div className="min-h-screen  bg-white">
-      {/* Top Bar */}
+    <div className="min-h-screen bg-white">
       <div className="border-b border-gray-200">
         <div className="max-w-[1600px] mx-auto px-8 py-6">
-          <h1 className="text-2xl font-light tracking-wide text-gray-900 mb-8">
-            Diamonds
-          </h1>
+<div className="flex items-center justify-between gap-6  pb-4">
+  {/* Title */}
+  <h1 className="text-2xl font-light capitalize tracking-wide text-royalblue whitespace-nowrap">
+    {selectedCategory} Diamonds
+  </h1>
 
-          {/* Type Selection */}
-          <div className="flex gap-6 mb-8">
-            <button
-              onClick={() => {
-                setSelectedType("Natural");
-                setSelectedCategory("natural-melee");
-              }}
-              className={`text-sm tracking-wide transition-all relative pb-2 ${
-                selectedType.toLowerCase() === "natural"
-                  ? "text-gray-900 font-medium"
-                  : "text-gray-500 hover:text-gray-700"
-              }`}
-            >
-              Natural
-              {selectedType.toLowerCase() === "natural" && (
-                <motion.div
-                  layoutId="typeIndicator"
-                  className="absolute bottom-0 left-0 right-0 h-px bg-gray-900"
-                />
-              )}
-            </button>
-            <button
-              onClick={() => {
-                setSelectedType("Lab-Grown");
-                setSelectedCategory("lab-melee");
-              }}
-              className={`text-sm tracking-wide transition-all relative pb-2 ${
-                selectedType.toLowerCase() === "lab-grown"
-                  ? "text-gray-900 font-medium"
-                  : "text-gray-500 hover:text-gray-700"
-              }`}
-            >
-              Lab-Grown
-              {selectedType.toLowerCase() === "lab-grown" && (
-                <motion.div
-                  layoutId="typeIndicator"
-                  className="absolute bottom-0 left-0 right-0 h-px bg-gray-900"
-                />
-              )}
-            </button>
-          </div>
+  {/* Type Toggle */}
+  <div className="flex items-center justify-center">
+    <div className="flex border border-gray-300 rounded-lg overflow-hidden shadow-sm bg-white">
+      {["Natural", "Lab-Grown"].map((type) => {
+        const isActive = selectedType.toLowerCase() === type.toLowerCase();
+        return (
+          <button
+            key={type}
+            onClick={() => {
+              setSelectedType(type);
+              setSelectedCategory(
+                type === "Natural" ? "natural-melee" : "lab-melee"
+              );
+            }}
+            className={`relative px-6 py-2 text-sm font-medium tracking-wide transition-all duration-300 ${
+              isActive
+                ? "bg-[#000B58] text-white shadow-inner"
+                : "text-gray-600 hover:bg-gray-50"
+            }`}
+          >
+            {type}
+          </button>
+        );
+      })}
+    </div>
+  </div>
 
-          {/* Category Selection */}
-          <div className="flex gap-3 mb-6">
-            {categories.map((category) => (
-              <button
-                key={category.id}
-                onClick={() => setSelectedCategory(category.id)}
-                className={`px-5 py-2 rounded-full text-xs tracking-wide transition-all ${
-                  selectedCategory === category.id
-                    ? "bg-gray-900 text-white"
-                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                }`}
-              >
-                {selectedType} {category.name}
-              </button>
-            ))}
-          </div>
+  {/* Category Buttons */}
+  <div className="flex gap-3 flex-wrap justify-end">
+    {categories.map((category) => (
+      <button
+        key={category.id}
+        onClick={() => setSelectedCategory(category.id)}
+        className={`px-5 py-2 rounded-full text-xs font-medium tracking-wide transition-all duration-200 ${
+          selectedCategory === category.id
+            ? "bg-[#000B58] text-white shadow-sm"
+            : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+        }`}
+      >
+        {selectedType} {category.name}
+      </button>
+    ))}
+  </div>
+</div>
 
           {/* Subcategory Tabs */}
-          <div className="border-b border-gray-200 mb-6">
-            <div className="flex gap-8">
-              {subcategories.map((subcategory) => (
-                <button
-                  key={subcategory.id}
-                  onClick={() => setSelectedSubcategory(subcategory.id)}
-                  className={`pb-3 text-sm tracking-wide transition-all relative ${
-                    selectedSubcategory === subcategory.id
-                      ? "text-gray-900 font-medium"
-                      : "text-gray-500 hover:text-gray-700"
-                  }`}
-                >
-                  {subcategory.name}
-                  {selectedSubcategory === subcategory.id && (
-                    <motion.div
-                      layoutId="activeTab"
-                      className="absolute bottom-0 left-0 right-0 h-px bg-gray-900"
-                    />
-                  )}
-                </button>
-              ))}
-            </div>
-          </div>
+<div className="border-b border-gray-200 my-8">
+  <div className="flex flex-wrap gap-6 relative">
+    {subcategories.map((subcategory) => {
+      const isActive = selectedSubcategory === subcategory.id;
+      return (
+        <button
+          key={subcategory.id}
+          onClick={() => setSelectedSubcategory(subcategory.id)}
+          className={`relative pb-2 text-base font-medium tracking-wide transition-all duration-300 ${
+            isActive
+              ? "text-[#000B58]"
+              : "text-gray-500 hover:text-[#000B58]/80"
+          }`}
+        >
+          {subcategory.name}
+
+          {/* Animated underline for active tab */}
+          {isActive && (
+            <motion.div
+              layoutId="activeTabUnderline"
+              className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#000B58] rounded-full"
+              transition={{ type: "spring", stiffness: 350, damping: 24 }}
+            />
+          )}
+        </button>
+      );
+    })}
+  </div>
+</div>
+    
+
 
           {/* Shape Selection */}
-          <div className="flex gap-2 overflow-x-auto pb-2 mb-6">
+          {/* <div className="flex gap-2 overflow-x-auto pb-2 mb-6">
             {availableShapes.map((shapeName) => {
               const shapeIcon = diamondData.shapes[shapeName.toLowerCase()];
               return (
@@ -429,6 +645,41 @@ const handleToggle = (section, e) => {
                 >
                   <span className="hidden md:block text-base">{shapeIcon}</span>
                   {shapeName.charAt(0).toUpperCase() + shapeName.slice(1)}
+                </button>
+              );
+            })}
+              
+          </div> */}
+
+          <div className="flex gap-3 overflow-x-auto pb-2 ">
+            {availableShapes.map((shapeName) => {
+              const lowerName = shapeName.toLowerCase();
+              const shapeData = diamondData.shapes[lowerName]; // { img, symbol }
+
+              return (
+                <button
+                  key={shapeName}
+                  onClick={() => setSelectedShape(shapeName)}
+                  className={`px-2 py-1.5 rounded-xl text-xs font-medium whitespace-nowrap transition-all flex flex-col items-center justify-center gap-2 ${
+                    selectedShape.toLowerCase() === lowerName
+                      ? "bg-white text-black scale-105 shadow-md"
+                      : "bg-gray-50 text-gray-700 hover:bg-gray-100"
+                  }`}
+                >
+                  {/* If shapeData.img exists → show image, else fallback to symbol */}
+                  {shapeData?.img ? (
+                    <img
+                      src={shapeData.img}
+                      alt={shapeName}
+                      className="w-16 h-16 object-contain"
+                    />
+                  ) : (
+                    <span className="text-lg">{shapeData?.symbol}</span>
+                  )}
+
+                  <span className="text-[11px] tracking-wide capitalize">
+                    {shapeName}
+                  </span>
                 </button>
               );
             })}
@@ -450,396 +701,184 @@ const handleToggle = (section, e) => {
               )}
             </div>
 
-<div className="grid grid-cols-1 md:grid-cols-6 gap-2 md:gap-6">
-  {/* Color & Clarity Filter */}
-  <div className="col-span-2">
-    <div className="md:border-0 border-b pb-4">
-      <button
-        onClick={() => {
-          if (window.innerWidth < 768) {
-            setOpenSections((prev) => ({
-              ...prev,
-              colorClarity: !prev.colorClarity,
-            }));
-          }
-        }}
-        className="text-xs justify-between items-center flex font-medium tracking-wider text-gray-900 mb-3 uppercase w-full cursor-pointer md:cursor-default"
-      >
-        <span>Color & Clarity</span>
-        <span className="md:hidden text-lg">
-          {openSections.colorClarity ? "-" : "+"}
-        </span>
-      </button>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 items-center gap-8">
+              {/* Color */}
+              {availableColors.length > 0 && (
+                <div>
+                  <h4 className="text-xs font-semibold uppercase text-gray-700 mb-4">
+                    Color
+                  </h4>
+                  <RangeSlider
+                    min={0}
+                    max={availableColors.length - 1}
+                    values={filters.color}
+                    onChange={(val) =>
+                      setFilters((prev) => ({ ...prev, color: val }))
+                    }
+                    labels={availableColors}
+                  />
+                </div>
+              )}
 
-      <div className={`space-y-2 max-h-64 overflow-y-auto pr-2 ${window.innerWidth < 768 && !openSections.colorClarity ? 'hidden' : 'block'} md:block`}>
-        {availableColors.map((color) => {
-          const clarityOptions = availableClarities[color] || [];
-          const selectedClarities = filters.colorClarity[color] || [];
+              {/* Clarity */}
+              {allClarities.length > 0 && (
+                <div>
+                  <h4 className="text-xs font-semibold uppercase text-gray-700 mb-4">
+                    Clarity
+                  </h4>
+                  <RangeSlider
+                    min={0}
+                    max={allClarities.length - 1}
+                    values={filters.clarity}
+                    onChange={(val) =>
+                      setFilters((prev) => ({ ...prev, clarity: val }))
+                    }
+                    labels={allClarities}
+                  />
+                </div>
+              )}
 
-          return (
-            <div
-              key={color}
-              className="flex flex-row gap-2 items-center border-b border-gray-200 pb-2"
-            >
-              <div className="text-sm mr-2 md:w-32 text-nowrap font-medium text-gray-900">
-                {color}
+              {/* Cut */}
+              {diamondData.attributes.cut.length > 0 && (
+                <div>
+                  <h4 className="text-xs font-semibold uppercase text-gray-700 mb-4">
+                    Cut
+                  </h4>
+                  <RangeSlider
+                    min={0}
+                    max={diamondData.attributes.cut.length - 1}
+                    values={filters.cut}
+                    onChange={(val) =>
+                      setFilters((prev) => ({ ...prev, cut: val }))
+                    }
+                    labels={diamondData.attributes.cut}
+                  />
+                </div>
+              )}
+
+              {/* Polish */}
+              {diamondData.attributes.polish.length > 0 && (
+                <div>
+                  <h4 className="text-xs font-semibold uppercase text-gray-700 mb-4">
+                    Polish
+                  </h4>
+                  <RangeSlider
+                    min={0}
+                    max={diamondData.attributes.polish.length - 1}
+                    values={filters.polish}
+                    onChange={(val) =>
+                      setFilters((prev) => ({ ...prev, polish: val }))
+                    }
+                    labels={diamondData.attributes.polish}
+                  />
+                </div>
+              )}
+
+              {/* Symmetry */}
+              {diamondData.attributes.symmetry.length > 0 && (
+                <div>
+                  <h4 className="text-xs font-semibold uppercase text-gray-700 mb-4">
+                    Symmetry
+                  </h4>
+                  <RangeSlider
+                    min={0}
+                    max={diamondData.attributes.symmetry.length - 1}
+                    values={filters.symmetry}
+                    onChange={(val) =>
+                      setFilters((prev) => ({ ...prev, symmetry: val }))
+                    }
+                    labels={diamondData.attributes.symmetry}
+                  />
+                </div>
+              )}
+
+              {/* Fluorescence */}
+              {diamondData.attributes.fluorescence.length > 0 && (
+                <div>
+                  <h4 className="text-xs font-semibold uppercase text-gray-700 mb-4">
+                    Fluorescence
+                  </h4>
+                  <RangeSlider
+                    min={0}
+                    max={diamondData.attributes.fluorescence.length - 1}
+                    values={filters.fluorescence}
+                    onChange={(val) =>
+                      setFilters((prev) => ({ ...prev, fluorescence: val }))
+                    }
+                    labels={diamondData.attributes.fluorescence}
+                  />
+                </div>
+              )}
+
+              {/* Carat */}
+              <div>
+                <h4 className="text-xs font-semibold uppercase text-gray-700 mb-4">
+                  Carat
+                </h4>
+                <RangeSlider
+                  min={0}
+                  max={10}
+                  values={filters.caratRange}
+                  onChange={(val) =>
+                    setFilters((prev) => ({ ...prev, caratRange: val }))
+                  }
+                />
               </div>
-              <div className="flex flex-wrap gap-2 ml-2">
-                {clarityOptions.map((clarity) => (
-                  <label
-                    key={clarity}
-                    className="flex items-center cursor-pointer group"
-                  >
-                    <input
-                      type="checkbox"
-                      checked={selectedClarities.includes(clarity)}
-                      onChange={() => toggleColorClarityFilter(color, clarity)}
-                      className="w-3.5 h-3.5 rounded border-gray-300 text-gray-900 focus:ring-gray-900"
-                    />
-                    <span className="ml-1 md:w-8 text-xs text-gray-600 group-hover:text-gray-900">
-                      {clarity}
-                    </span>
-                  </label>
-                ))}
+
+              {/* Price */}
+              <div>
+                <h4 className="text-xs font-semibold uppercase text-gray-700 mb-4">
+                  Price
+                </h4>
+                <RangeSlider
+                  min={0}
+                  max={50000}
+                  values={filters.priceRange}
+                  onChange={(val) =>
+                    setFilters((prev) => ({ ...prev, priceRange: val }))
+                  }
+                  unit="$"
+                />
               </div>
+
+              {/* Certification */}
+              {diamondData.attributes.certification.length > 0 && (
+                <div>
+                  <h4 className="text-xs font-semibold uppercase text-gray-700 mb-4">
+                    Certification
+                  </h4>
+                  <div className="flex md:flex-row flex-col gap-2 md:gap-4">
+                    {diamondData.attributes.certification.map((cert) => (
+                      <label
+                        key={cert}
+                        className="flex items-center cursor-pointer group"
+                      >
+                        <input
+                          type="checkbox"
+                          checked={filters.certification.includes(cert)}
+                          onChange={() => toggleCertification(cert)}
+                          className="w-4 h-4 rounded border-gray-300 text-gray-900 focus:ring-gray-900"
+                        />
+                        <span className="ml-2 text-xs text-gray-700 group-hover:text-gray-900">
+                          {cert}
+                        </span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
-          );
-        })}
-      </div>
-    </div>
-  </div>
-
-  {/* Carat & Price Range */}
-  <div className="md:col-span-1 col-span-2">
-    <div className="md:border-0 border-b pb-4">
-      <button
-        onClick={() => {
-          if (window.innerWidth < 768) {
-            setOpenSections((prev) => ({
-              ...prev,
-              caratPrice: !prev.caratPrice,
-            }));
-          }
-        }}
-        className="text-xs justify-between items-center flex font-medium tracking-wider text-gray-900 mb-3 uppercase w-full cursor-pointer md:cursor-default"
-      >
-        <span>Carat & Price</span>
-        <span className="md:hidden text-lg">
-          {openSections.caratPrice ? "-" : "+"}
-        </span>
-      </button>
-
-      <div className={`${!openSections.caratPrice ? 'hidden' : 'block'} md:block`}>
-        {/* Carat */}
-        <div className="space-y-2">
-          <div className="flex justify-between text-xs text-gray-600 mb-2">
-            <span>Min: {filters.caratRange[0]}</span>
-            <span>Max: {filters.caratRange[1]}</span>
-          </div>
-          <div className="relative h-6">
-            <input
-              type="range"
-              min="0"
-              max="10"
-              step="0.1"
-              value={filters.caratRange[0]}
-              onChange={(e) => {
-                const val = parseFloat(e.target.value);
-                if (val <= filters.caratRange[1]) {
-                  setFilters((prev) => ({
-                    ...prev,
-                    caratRange: [val, prev.caratRange[1]],
-                  }));
-                }
-              }}
-              className="absolute w-full h-1 bg-transparent appearance-none cursor-pointer pointer-events-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-gray-900 [&::-webkit-slider-thumb]:cursor-pointer"
-              style={{ zIndex: filters.caratRange[0] > 5 ? 5 : 3 }}
-            />
-            <input
-              type="range"
-              min="0"
-              max="10"
-              step="0.1"
-              value={filters.caratRange[1]}
-              onChange={(e) => {
-                const val = parseFloat(e.target.value);
-                if (val >= filters.caratRange[0]) {
-                  setFilters((prev) => ({
-                    ...prev,
-                    caratRange: [prev.caratRange[0], val],
-                  }));
-                }
-              }}
-              className="absolute w-full h-1 bg-transparent appearance-none cursor-pointer pointer-events-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-gray-900 [&::-webkit-slider-thumb]:cursor-pointer"
-              style={{ zIndex: 4 }}
-            />
-            <div
-              className="absolute w-full h-1 bg-gray-200 rounded-lg top-[15%] -translate-y-1/2"
-              style={{ zIndex: 1 }}
-            >
-              <div
-                className="absolute h-full bg-gray-900 rounded-lg"
-                style={{
-                  left: `${(filters.caratRange[0] / 10) * 100}%`,
-                  right: `${100 - (filters.caratRange[1] / 10) * 100}%`,
-                  zIndex: 2,
-                }}
-              />
-            </div>
-          </div>
-        </div>
-
-        {/* Price */}
-        <div className="space-y-2 mt-6">
-          <div className="flex justify-between text-xs text-gray-600 mb-2">
-            <span>Min: ${filters.priceRange[0].toLocaleString()}</span>
-            <span>Max: ${filters.priceRange[1].toLocaleString()}</span>
-          </div>
-          <div className="relative h-6">
-            <input
-              type="range"
-              min="0"
-              max="50000"
-              step="100"
-              value={filters.priceRange[0]}
-              onChange={(e) => {
-                const val = parseInt(e.target.value);
-                if (val <= filters.priceRange[1]) {
-                  setFilters((prev) => ({
-                    ...prev,
-                    priceRange: [val, prev.priceRange[1]],
-                  }));
-                }
-              }}
-              className="absolute w-full h-1 bg-transparent appearance-none cursor-pointer pointer-events-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-gray-900 [&::-webkit-slider-thumb]:cursor-pointer"
-              style={{ zIndex: filters.priceRange[0] > 25000 ? 5 : 3 }}
-            />
-            <input
-              type="range"
-              min="0"
-              max="50000"
-              step="100"
-              value={filters.priceRange[1]}
-              onChange={(e) => {
-                const val = parseInt(e.target.value);
-                if (val >= filters.priceRange[0]) {
-                  setFilters((prev) => ({
-                    ...prev,
-                    priceRange: [prev.priceRange[0], val],
-                  }));
-                }
-              }}
-              className="absolute w-full h-1 bg-transparent appearance-none cursor-pointer pointer-events-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-gray-900 [&::-webkit-slider-thumb]:cursor-pointer"
-              style={{ zIndex: 4 }}
-            />
-            <div
-              className="absolute w-full h-1 bg-gray-200 rounded-lg top-[15%] -translate-y-1/2"
-              style={{ zIndex: 1 }}
-            >
-              <div
-                className="absolute h-full bg-gray-900 rounded-lg"
-                style={{
-                  left: `${(filters.priceRange[0] / 50000) * 100}%`,
-                  right: `${100 - (filters.priceRange[1] / 50000) * 100}%`,
-                  zIndex: 2,
-                }}
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  {/* Cut */}
-  <div className="md:col-span-1 col-span-2">
-    <div className="md:border-0 border-b pb-4">
-      <button
-        onClick={() => {
-          if (window.innerWidth < 768) {
-            setOpenSections((prev) => ({
-              ...prev,
-              cut: !prev.cut,
-            }));
-          }
-        }}
-        className="text-xs justify-between items-center flex font-medium tracking-wider text-gray-900 mb-3 uppercase w-full cursor-pointer md:cursor-default"
-      >
-        <span>Cut</span>
-        <span className="md:hidden text-lg">
-          {openSections.cut ? "-" : "+"}
-        </span>
-      </button>
-
-      <div className={`space-y-2 mb-2 ${!openSections.cut ? 'hidden' : 'block'} md:block`}>
-        {diamondData.attributes.cut.map((cut) => (
-          <label
-            key={cut}
-            className="flex items-center cursor-pointer group"
-          >
-            <input
-              type="checkbox"
-              checked={filters.cut.includes(cut)}
-              onChange={() => toggleFilter("cut", cut)}
-              className="w-4 h-4 rounded border-gray-300 text-gray-900 focus:ring-gray-900"
-            />
-            <span className="ml-2 text-xs text-gray-700 group-hover:text-gray-900">
-              {cut}
-            </span>
-          </label>
-        ))}
-      </div>
-    </div>
-  </div>
-
-  {/* Polish & Symmetry */}
-  <div className="md:col-span-1 col-span-2">
-    <div className="md:border-0 border-b pb-4">
-      <button
-        onClick={() => {
-          if (window.innerWidth < 768) {
-            setOpenSections((prev) => ({
-              ...prev,
-              polishSymmetry: !prev.polishSymmetry,
-            }));
-          }
-        }}
-        className="text-xs justify-between items-center flex font-medium tracking-wider text-gray-900 mb-3 uppercase w-full cursor-pointer md:cursor-default"
-      >
-        <span>Polish & Symmetry</span>
-        <span className="md:hidden text-lg">
-          {openSections.polishSymmetry ? "-" : "+"}
-        </span>
-      </button>
-
-      <div className={`${!openSections.polishSymmetry ? 'hidden' : 'block'} md:block`}>
-        <div className="space-y-2 mb-6">
-          <h5 className="text-[11px] font-semibold uppercase text-gray-700">
-            Polish
-          </h5>
-          {diamondData.attributes.polish.map((polish) => (
-            <label
-              key={polish}
-              className="flex items-center cursor-pointer group"
-            >
-              <input
-                type="checkbox"
-                checked={filters.polish.includes(polish)}
-                onChange={() => toggleFilter("polish", polish)}
-                className="w-4 h-4 rounded border-gray-300 text-gray-900 focus:ring-gray-900"
-              />
-              <span className="ml-2 text-xs text-gray-700 group-hover:text-gray-900">
-                {polish}
-              </span>
-            </label>
-          ))}
-        </div>
-
-        <div className="space-y-2 mb-2">
-          <h5 className="text-[11px] font-semibold uppercase text-gray-700">
-            Symmetry
-          </h5>
-          {diamondData.attributes.symmetry.map((symmetry) => (
-            <label
-              key={symmetry}
-              className="flex items-center cursor-pointer group"
-            >
-              <input
-                type="checkbox"
-                checked={filters.symmetry.includes(symmetry)}
-                onChange={() => toggleFilter("symmetry", symmetry)}
-                className="w-4 h-4 rounded border-gray-300 text-gray-900 focus:ring-gray-900"
-              />
-              <span className="ml-2 text-xs text-gray-700 group-hover:text-gray-900">
-                {symmetry}
-              </span>
-            </label>
-          ))}
-        </div>
-      </div>
-    </div>
-  </div>
-
-  {/* Fluorescence & Certification */}
-  <div>
-    <div className="md:border-0 border-b pb-4">
-      <button
-        onClick={() => {
-          if (window.innerWidth < 768) {
-            setOpenSections((prev) => ({
-              ...prev,
-              fluorescenceCert: !prev.fluorescenceCert,
-            }));
-          }
-        }}
-        className="text-xs justify-between items-center flex font-medium tracking-wider text-gray-900 mb-3 uppercase w-full cursor-pointer md:cursor-default"
-      >
-        <span>Fluorescence & Certification</span>
-        <span className="md:hidden text-lg">
-          {openSections.fluorescenceCert ? "-" : "+"}
-        </span>
-      </button>
-
-      <div className={`${!openSections.fluorescenceCert ? 'hidden' : 'block'} md:block`}>
-        <div className="space-y-2 mb-6">
-          <h5 className="text-[11px] font-semibold uppercase text-gray-700">
-            Fluorescence
-          </h5>
-          {diamondData.attributes.fluorescence.map((fluor) => (
-            <label
-              key={fluor}
-              className="flex items-center cursor-pointer group"
-            >
-              <input
-                type="checkbox"
-                checked={filters.fluorescence.includes(fluor)}
-                onChange={() => toggleFilter("fluorescence", fluor)}
-                className="w-4 h-4 rounded border-gray-300 text-gray-900 focus:ring-gray-900"
-              />
-              <span className="ml-2 text-xs text-gray-700 group-hover:text-gray-900">
-                {fluor}
-              </span>
-            </label>
-          ))}
-        </div>
-
-        <div className="space-y-2 mb-2">
-          <h5 className="text-[11px] font-semibold uppercase text-gray-700">
-            Certification
-          </h5>
-          {diamondData.attributes.certification.map((cert) => (
-            <label
-              key={cert}
-              className="flex items-center cursor-pointer group"
-            >
-              <input
-                type="checkbox"
-                checked={filters.certification.includes(cert)}
-                onChange={() => toggleFilter("certification", cert)}
-                className="w-4 h-4 rounded border-gray-300 text-gray-900 focus:ring-gray-900"
-              />
-              <span className="ml-2 text-xs text-gray-700 group-hover:text-gray-900">
-                {cert}
-              </span>
-            </label>
-          ))}
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
           </div>
         </div>
       </div>
 
       {/* Results Section */}
-      <div className="max-w-[1600px] mx-auto px-8 py-8">
-        {/* Search and Controls */}
+      <div className="max-w-[1600px] mb-32 mx-auto px-8 py-8">
         <div className="flex items-center gap-2 md:gap-0 flex-col md:flex-row md:justify-between mb-6">
           <div className="flex items-center gap-6">
             <p className="text-sm text-nowrap text-gray-600">
-           {filteredDiamonds.length} {filteredDiamonds.length === 1 ? "diamond" : "diamonds"}
-
+              {filteredDiamonds.length}{" "}
+              {filteredDiamonds.length === 1 ? "diamond" : "diamonds"}
             </p>
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
