@@ -11,6 +11,7 @@ import {
   Shield,
   Sparkles,
   ChevronRight,
+  ArrowLeft,
   X,
 } from "lucide-react";
 import { getRingById, getRecommendedRings, ringProducts } from "./MasterData";
@@ -203,6 +204,9 @@ const JewelryDetailPage = () => {
     }, 3000);
     return () => clearInterval(interval);
   }, [images.length]);
+  const imageList = currentImages?.gallery
+  ? [currentImages.main, currentImages.hover, ...currentImages.gallery]
+  : [currentImages.main, currentImages.hover];
 
   return (
     <div className="bg-white min-h-screen">
@@ -215,7 +219,7 @@ const JewelryDetailPage = () => {
             initial={{ y: -100 }}
             animate={{ y: 0 }}
             exit={{ y: -100 }}
-            className="fixed md:block hidden top-16 left-0 right-0 bg-white z-40 shadow-sm shadow-gray-300"
+            className="fixed md:block hidden top-20 left-0 right-0 bg-white z-40 shadow-sm shadow-gray-300"
           >
             <div className="max-w-7xl mx-auto px-12 py-4 flex items-center justify-between">
               <div className="flex items-center gap-4">
@@ -275,53 +279,69 @@ const JewelryDetailPage = () => {
         )}
       </AnimatePresence>
 
-      {/* Breadcrumb */}
-     <div className="hidden md:flex mx-auto items-center  w-full px-12 py-4 text-sm text-gray-600 space-x-2">
-      {/* Home */}
-      <span
-        className="cursor-pointer hover:text-black transition-colors"
-        onClick={() => navigate("/")}
-      >
-        Home
-      </span>
-      <ChevronRight className="w-4 h-4 text-gray-400" />
+    <div className="hidden md:flex justify-between items-center w-full px-12 py-4 text-sm text-gray-600">
+      {/* Left: Breadcrumb */}
+      <div className="flex items-center space-x-2">
+        {/* Home */}
+        <span
+          className="cursor-pointer hover:text-black transition-colors"
+          onClick={() => navigate("/")}
+        >
+          Home
+        </span>
+        <ChevronRight className="w-4 h-4 text-gray-400" />
 
-      {/* Category */}
-      <span
-        className="cursor-pointer hover:text-black transition-colors"
-        onClick={() => navigate("/jewelry/rings")}
-      >
-        Rings
-      </span>
-      <ChevronRight className="w-4 h-4 text-gray-400" />
+        {/* Category */}
+        <span
+          className="cursor-pointer hover:text-black transition-colors"
+          onClick={() => navigate("/jewelry/rings")}
+        >
+          Rings
+        </span>
+        <ChevronRight className="w-4 h-4 text-gray-400" />
 
-      {/* Current Product */}
-      <span className="text-black font-medium truncate max-w-[200px]">
-        {product?.name || "Diamond"}
-      </span>
+        {/* Current Product */}
+        <span className="text-black font-medium truncate max-w-[200px]">
+          {product?.name || "Diamond"}
+        </span>
+      </div>
+
+      {/* Right: Back Button */}
+      <button
+        onClick={() => navigate(-1)}
+        className="flex items-center gap-1 text-gray-600 hover:text-black transition-colors"
+      >
+        <ArrowLeft className="w-4 h-4" />
+        <span>Back</span>
+      </button>
     </div>
 
       <div ref={contentRef} className="w-full mx-auto px-4 md:px-12 pb-12">
         <div className="flex flex-col lg:flex-row gap-4 md:gap-16">
           {/* Left Side - Images (65%) */}
           <div className=" hidden md:block lg:w-[65%]">
-            <div className="grid grid-cols-2 gap-2">
-              {[...Array(6)].map((_, idx) => (
-                <motion.div
-                  key={idx}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.6, delay: idx * 0.1 }}
-                  className="bg-stone-100 aspect-[4/5]"
-                >
-                  <img
-                    src={idx === 0 ? currentImages.main : currentImages.hover}
-                    alt={`${product.name} ${idx + 1}`}
-                    className="w-full  object-cover"
-                  />
-                </motion.div>
-              ))}
-            </div>
+
+
+  <div className="grid grid-cols-2 gap-2">
+    {imageList.map((imgSrc, idx) => (
+      <motion.div
+        key={idx}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.6, delay: idx * 0.1 }}
+        className="bg-stone-100 aspect-[4/5]  "
+      >
+        <img
+          src={imgSrc}
+          alt={`${product.name} ${idx + 1}`}
+          className="w-full h-full"
+        />
+      </motion.div>
+    ))}
+  </div>
+
+
+   
           </div>
 
           <div className="lg:hidden relative overflow-hidden aspect-[4/5]">
@@ -330,7 +350,7 @@ const JewelryDetailPage = () => {
                 key={currentIndex}
                 src={images[currentIndex]}
                 alt={`${product.name} ${currentIndex + 1}`}
-                className="w-full h-full object-cover absolute inset-0"
+                className="w-full h-full absolute inset-0"
                 initial={{ opacity: 0, x: 50 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -50 }}

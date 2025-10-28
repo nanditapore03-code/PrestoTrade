@@ -71,7 +71,7 @@ export default function PrestoHomepage() {
   return (
     <div className="relative bg-white text-gray-900">
       {/* Hero Slider */}
-      <section className="relative h-[700px] overflow-hidden bg-gray-50">
+      <section className="relative h-[600px] md:h-[700px] overflow-hidden bg-gray-50">
         <AnimatePresence mode="wait">
           <motion.div
             key={currentSlide}
@@ -155,7 +155,7 @@ export default function PrestoHomepage() {
     viewport={{ once: true }}
     className="text-center mb-12"
   >
-    <h2 className="text-4xl text-royalblue md:text-4xl font-light mb-4 uppercase tracking-wide">
+    <h2 className="text-3xl text-royalblue md:text-4xl font-light mb-4 uppercase tracking-wide">
       Discover Our World
     </h2>
     <p className="text-gray-600 text-lg max-w-2xl mx-auto">
@@ -244,7 +244,7 @@ export default function PrestoHomepage() {
   viewport={{ once: true }}
   className="text-center mb-16"
 >
-  <h2 className="text-4xl md:text-4xl text-royalblue font-light mb-4 tracking-wide">
+  <h2 className="text-3xl text-nowrap md:text-4xl text-royalblue font-light mb-4 tracking-wide">
     DIAMONDS COLLECTION
   </h2>
   <p className="text-gray-600 max-w-2xl mx-auto">
@@ -404,9 +404,9 @@ export default function PrestoHomepage() {
               placeholder="Enter your email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="flex-1 px-6 py-4 border border-yellow-900/60 focus:outline-none focus:border-yellow-900 transition-colors"
+              className="flex-1 px-6 py-4 border border-blue-900/60 focus:outline-none focus:border-blue-900 transition-colors"
             />
-            <button className="px-4 md:px-8 py-4 bg-yellow-800/90 text-white text-sm tracking-widest hover:bg-yellow-800 transition-colors">
+            <button className="px-4 md:px-8 py-4 bg-blue-900/90 text-white text-sm tracking-widest hover:bg-blue-800 transition-colors">
               Subscribe
             </button>
           </div>
@@ -419,7 +419,7 @@ export default function PrestoHomepage() {
 // Fine Jewelry Section Component
 function FineJewelrySection() {
   return (
-    <section className="py-20 px-6  md:px-0 bg-amber-50/30">
+    <section className=" py-10 md:py-16 px-6  md:px-0 bg-amber-50/30">
       {/* <div className="max-w-7xl mx-auto"> */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -427,7 +427,7 @@ function FineJewelrySection() {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-4xl text-royalblue font-light mb-4 tracking-wide">
+          <h2 className="text-3xl md:text-4xl text-royalblue font-light mb-4 tracking-wide">
             FINE JEWELRY COLLECTION
           </h2>
           <p className="text-gray-600 text-lg max-w-2xl mx-auto">
@@ -519,7 +519,7 @@ function DiamondShapesSection() {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-           <h2 className="text-4xl md:text-4xl uppercase text-yellow-600 font-light mb-4 tracking-wide">
+           <h2 className="text-3xl md:text-4xl uppercase text-yellow-600 font-light mb-4 tracking-wide">
             Diamond Shapes
           </h2>
           {/* <h2 className="text-md tracking-[0.15em] mb-4 uppercase text-gray-500">Diamond Shapes</h2> */}
@@ -894,7 +894,7 @@ function JewelryCollectionsCarousel() {
   }, []);
 
   return (
-    <section className="py-20 px-6 md:px-20 bg-white">
+    <section className="py-10 md:py-20 px-6 md:px-20 bg-white">
       <div className="">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -902,7 +902,7 @@ function JewelryCollectionsCarousel() {
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <h2 className="text-4xl md:text-4xl text-royalblue uppercase font-light mb-4 tracking-wide">
+          <h2 className="text-3xl md:text-4xl text-royalblue uppercase font-light mb-4 tracking-wide">
             Explore Our Collections
           </h2>
           <p className="text-gray-600 text-lg max-w-2xl mx-auto">
@@ -1141,7 +1141,7 @@ function FancyColorDiamonds() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-4xl md:text-4xl text-royalblue capitalize font-light mb-4 tracking-wide"
+          className="text-3xl md:text-4xl text-royalblue capitalize font-light mb-4 tracking-wide"
         >
           Engagement Ring Collection
         </motion.h2>
