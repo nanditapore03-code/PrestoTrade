@@ -450,6 +450,7 @@ Fine Jewelry & Fancy Shape Diamonds
                 >
                   <Link
                     to={menuData[key].path}
+                    onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
                     className="relative font-normal text-gray-800 tracking-[0.1em] transition-opacity  inline-block"
                   >
                     {menuData[key].title}

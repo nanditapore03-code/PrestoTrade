@@ -8,6 +8,7 @@ import {
   Award,
   Shield,
   Gem,
+  // Link,
 } from "lucide-react";
 
 import rings from "../assets/jewelry/rings.webp";
@@ -28,6 +29,7 @@ import marquise_cut from "../assets/home_diamonds/marquise.png";
 import pear_cut from "../assets/home_diamonds/pear.png";
 import fine_jewelry from "../assets/home_diamonds/princess.png";
 import fancy_diamonds from "../assets/home_diamonds/princess.png";
+import { Link } from "react-router-dom";
 
 export default function PrestoHomepage() {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -188,9 +190,15 @@ export default function PrestoHomepage() {
         <p className="text-lg font-light mb-6">
           Timeless pieces crafted with precision and elegance
         </p>
-        <button className="border-2 border-white px-8 py-3 text-lg tracking-widest hover:bg-white hover:text-gray-900 transition-all">
-          Explore Jewelry
-        </button>
+       
+         <Link
+  to="/jewelry"
+  onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+  className="inline-block border-2 border-white px-8 py-3 text-lg tracking-widest text-white hover:bg-white hover:text-gray-900 transition-all"
+>
+  Explore Jewelry
+</Link>
+
       </div>
     </motion.div>
 
@@ -218,9 +226,11 @@ export default function PrestoHomepage() {
         <p className="text-lg font-light mb-6">
           GIA certified stones with unmatched brilliance
         </p>
-        <button className="border-2 border-white px-8 py-3 text-lg tracking-widest hover:bg-white hover:text-gray-900 transition-all">
+          <Link
+  to="/jewelry"
+  onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}className="border-2 border-white px-8 py-3 text-lg tracking-widest hover:bg-white hover:text-gray-900 transition-all">
           Explore Diamonds
-        </button>
+        </Link>
       </div>
     </motion.div>
   </div>

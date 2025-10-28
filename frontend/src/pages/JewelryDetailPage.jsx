@@ -219,9 +219,9 @@ const JewelryDetailPage = () => {
             initial={{ y: -100 }}
             animate={{ y: 0 }}
             exit={{ y: -100 }}
-            className="fixed md:block hidden top-20 left-0 right-0 bg-white z-40 shadow-sm shadow-gray-300"
+            className="fixed md:block top-12 md:top-20 left-0 right-0 bg-white z-40 shadow-sm shadow-gray-300"
           >
-            <div className="max-w-7xl mx-auto px-12 py-4 flex items-center justify-between">
+            <div className="max-w-7xl mx-auto px-2 md:px-12  py-2 md:py-4 flex items-center justify-between">
               <div className="flex items-center gap-4">
                 <div className="w-16 h-16 bg-gray-50">
                   <img
@@ -252,25 +252,34 @@ const JewelryDetailPage = () => {
                 </span>
               </button> */}
               <button
-                className="relative  bg-black text-white  px-8 py-2 overflow-hidden group font-medium"
+                className="relative  bg-royalblue text-white  px-8 py-2 overflow-hidden group font-medium"
                 onMouseEnter={() => setIsAddToCartHovered(true)}
                 onMouseLeave={() => setIsAddToCartHovered(false)}
               >
                 <motion.div
-                  className="absolute inset-0 bg-white border border-black"
+                  className="absolute inset-0 bg-white border border-royalblue"
                   initial={{ x: "-100%" }}
                   animate={{ x: isAddToCartHovered ? "0%" : "-100%" }}
                   transition={{ duration: 0.4, ease: "easeInOut" }}
                 />
-
-                <motion.span
-                  className="relative z-10 flex items-center justify-center gap-2"
+ <motion.span
+                  className="relative md:hidden  z-10 "
                   animate={{
-                    color: isAddToCartHovered ? "#000000" : "#FFFFFF",
+                    color: isAddToCartHovered ? "#000B58" : "#FFFFFF",
                   }}
                   transition={{ duration: 0.3, ease: "easeInOut" }}
                 >
-                  <ShoppingBag size={18} />
+                  <ShoppingBag  size={18} />
+           
+                </motion.span>
+                <motion.span
+                  className="relative hidden md:block  z-10 md:flex items-center justify-center gap-2"
+                  animate={{
+                    color: isAddToCartHovered ? "#000B58" : "#FFFFFF",
+                  }}
+                  transition={{ duration: 0.3, ease: "easeInOut" }}
+                >
+                  <ShoppingBag  size={18} />
                   ADD TO BAG
                 </motion.span>
               </button>
@@ -388,7 +397,7 @@ const JewelryDetailPage = () => {
                         {product.badge}
                       </div>
                     )}
-                    <h1 className="text-2xl  mb-1">{product.name}</h1>
+                    <h1 className="text-xl md:text-3xl font-medium text-royalblue mb-1">{product.name}</h1>
                     <p className="text-sm text-gray-600">{product.material}</p>
                   </div>
                   <button
@@ -465,8 +474,8 @@ const JewelryDetailPage = () => {
                         onClick={() => setSelectedSize(size)}
                         className={`px-4 py-2 text-sm border whitespace-nowrap ${
                           selectedSize === size
-                            ? "border-black bg-black text-white"
-                            : "border-gray-300 hover:border-black"
+                            ? "border-royalblue bg-royalblue text-white"
+                            : "border-gray-300 hover:border-royalblue"
                         } transition-colors`}
                       >
                         {size}
@@ -477,13 +486,13 @@ const JewelryDetailPage = () => {
                 <p className="text-2xl font-light mb-6">${product.price}</p>
                 {/* Add to Bag Button with Animation */}
                 <button
-                  className="relative w-full bg-black text-white py-2 mb-4 overflow-hidden group font-medium"
+                  className="relative w-full bg-royalblue text-white py-2 mb-4 overflow-hidden group font-medium"
                   onMouseEnter={() => setIsAddToCartHovered(true)}
                   onMouseLeave={() => setIsAddToCartHovered(false)}
                 >
                   {/* Sliding white background animation */}
                   <motion.div
-                    className="absolute inset-0 bg-white border border-black"
+                    className="absolute inset-0 bg-white border border-royalblue"
                     initial={{ x: "-100%" }}
                     animate={{ x: isAddToCartHovered ? "0%" : "-100%" }}
                     transition={{ duration: 0.4, ease: "easeInOut" }}
@@ -493,7 +502,7 @@ const JewelryDetailPage = () => {
                   <motion.span
                     className="relative z-10 flex items-center justify-center gap-2"
                     animate={{
-                      color: isAddToCartHovered ? "#000000" : "#FFFFFF",
+                      color: isAddToCartHovered ? "#000B58" : "#FFFFFF",
                     }}
                     transition={{ duration: 0.3, ease: "easeInOut" }}
                   >
