@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Grid, List, Search } from "lucide-react";
+import { Grid, List, Search,SlidersHorizontal ,X } from "lucide-react";
 import DiamondCard from "../components/DiamondCard";
 import DiamondListItem from "../components/DiamondListItem";
 import {
@@ -141,7 +141,7 @@ const DiamondPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState("carat-asc");
   const [favorites, setFavorites] = useState([]);
-
+  const [showMobileFilters, setShowMobileFilters] = useState(false);
   const [selectedType, setSelectedType] = useState("Natural");
   const [selectedCategory, setSelectedCategory] = useState("natural-melee");
   const [selectedSubcategory, setSelectedSubcategory] = useState("Standard");
@@ -542,7 +542,7 @@ const DiamondPage = () => {
   const activeFiltersCount = filters.certification.length;
 
   return (
-    <div className="min-h-screen bg-white">
+<div className="min-h-screen bg-white">
       <div className="border-b border-gray-200">
         <div className="max-w-[1600px] mx-auto px-8 py-6">
 <div className="flex items-center md:flex-row flex-col md:justify-between gap-6  pb-4">
@@ -627,30 +627,7 @@ const DiamondPage = () => {
   </div>
 </div>
     
-
-
           {/* Shape Selection */}
-          {/* <div className="flex gap-2 overflow-x-auto pb-2 mb-6">
-            {availableShapes.map((shapeName) => {
-              const shapeIcon = diamondData.shapes[shapeName.toLowerCase()];
-              return (
-                <button
-                  key={shapeName}
-                  onClick={() => setSelectedShape(shapeName)}
-                  className={`px-4 py-2 rounded-full text-xs whitespace-nowrap transition-all flex items-center gap-2 ${
-                    selectedShape.toLowerCase() === shapeName.toLowerCase()
-                      ? "bg-gray-900 text-white"
-                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                  }`}
-                >
-                  <span className="hidden md:block text-base">{shapeIcon}</span>
-                  {shapeName.charAt(0).toUpperCase() + shapeName.slice(1)}
-                </button>
-              );
-            })}
-              
-          </div> */}
-
           <div className="flex gap-3 overflow-x-auto pb-2 ">
             {availableShapes.map((shapeName) => {
               const lowerName = shapeName.toLowerCase();
@@ -660,7 +637,7 @@ const DiamondPage = () => {
                 <button
                   key={shapeName}
                   onClick={() => setSelectedShape(shapeName)}
-                  className={`px-2 py-1.5 rounded-xl text-xs font-medium whitespace-nowrap transition-all flex flex-col items-center justify-center gap-2 ${
+                  className={`px-2 w-16 py-1.5 rounded-xl text-xs font-medium whitespace-nowrap transition-all flex flex-col items-center justify-center gap-2 ${
                     selectedShape.toLowerCase() === lowerName
                       ? "bg-white text-black scale-105 shadow-md"
                       : "bg-gray-50 text-gray-700 hover:bg-gray-100"
@@ -686,7 +663,26 @@ const DiamondPage = () => {
           </div>
 
           {/* Filters Section */}
-          <div className="bg-gray-50 rounded-lg p-6 mb-4">
+          {/* Mobile Filter Button */}
+          <div className="md:hidden mb-4 mt-4">
+            <button
+              onClick={() => setShowMobileFilters(true)}
+              className="w-full flex items-center justify-between bg-gray-50 border border-gray-300 rounded-lg px-4 py-3 text-sm font-medium text-gray-900"
+            >
+              <span>Filters</span>
+              <div className="flex items-center gap-2">
+                {activeFiltersCount > 0 && (
+                  <span className="bg-[#000B58] text-white text-xs px-2 py-0.5 rounded-full">
+                    {activeFiltersCount}
+                  </span>
+                )}
+                <SlidersHorizontal className="w-4 h-4" />
+              </div>
+            </button>
+          </div>
+
+          {/* Desktop Filters */}
+          <div className="hidden md:block bg-gray-50 rounded-lg p-6 mb-4">
             <div className="flex items-center justify-between mb-6">
               <h3 className="text-sm font-medium tracking-wide text-gray-900">
                 Filters
@@ -869,6 +865,231 @@ const DiamondPage = () => {
               )}
             </div>
           </div>
+
+          {/* Mobile Filter Drawer */}
+          <AnimatePresence>
+            {showMobileFilters && (
+              <>
+                {/* Backdrop */}
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  onClick={() => setShowMobileFilters(false)}
+                  className="fixed inset-0 bg-black/50 z-40 md:hidden"
+                />
+
+                {/* Drawer */}
+                <motion.div
+                  initial={{ x: "100%" }}
+                  animate={{ x: 0 }}
+                  exit={{ x: "100%" }}
+                  transition={{ type: "spring", damping: 30, stiffness: 300 }}
+                  className="fixed top-0 right-0 bottom-0 w-full max-w-sm bg-white z-50 md:hidden flex flex-col shadow-2xl"
+                >
+                  {/* Header */}
+                  <div className="flex items-center justify-between p-4 border-b border-gray-200">
+                    <h3 className="text-lg font-medium text-gray-900">
+                      Filters
+                    </h3>
+                    <button
+                      onClick={() => setShowMobileFilters(false)}
+                      className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                    >
+                      <X className="w-5 h-5" />
+                    </button>
+                  </div>
+
+                  {/* Filter Content - Scrollable */}
+                  <div className="flex-1 overflow-y-auto p-4 space-y-6">
+                    {/* Color */}
+                    {availableColors.length > 0 && (
+                      <div>
+                        <h4 className="text-xs font-semibold uppercase text-gray-700 mb-4">
+                          Color
+                        </h4>
+                        <RangeSlider
+                          min={0}
+                          max={availableColors.length - 1}
+                          values={filters.color}
+                          onChange={(val) =>
+                            setFilters((prev) => ({ ...prev, color: val }))
+                          }
+                          labels={availableColors}
+                        />
+                      </div>
+                    )}
+
+                    {/* Clarity */}
+                    {allClarities.length > 0 && (
+                      <div>
+                        <h4 className="text-xs font-semibold uppercase text-gray-700 mb-4">
+                          Clarity
+                        </h4>
+                        <RangeSlider
+                          min={0}
+                          max={allClarities.length - 1}
+                          values={filters.clarity}
+                          onChange={(val) =>
+                            setFilters((prev) => ({ ...prev, clarity: val }))
+                          }
+                          labels={allClarities}
+                        />
+                      </div>
+                    )}
+
+                    {/* Cut */}
+                    {diamondData.attributes.cut.length > 0 && (
+                      <div>
+                        <h4 className="text-xs font-semibold uppercase text-gray-700 mb-4">
+                          Cut
+                        </h4>
+                        <RangeSlider
+                          min={0}
+                          max={diamondData.attributes.cut.length - 1}
+                          values={filters.cut}
+                          onChange={(val) =>
+                            setFilters((prev) => ({ ...prev, cut: val }))
+                          }
+                          labels={diamondData.attributes.cut}
+                        />
+                      </div>
+                    )}
+
+                    {/* Polish */}
+                    {diamondData.attributes.polish.length > 0 && (
+                      <div>
+                        <h4 className="text-xs font-semibold uppercase text-gray-700 mb-4">
+                          Polish
+                        </h4>
+                        <RangeSlider
+                          min={0}
+                          max={diamondData.attributes.polish.length - 1}
+                          values={filters.polish}
+                          onChange={(val) =>
+                            setFilters((prev) => ({ ...prev, polish: val }))
+                          }
+                          labels={diamondData.attributes.polish}
+                        />
+                      </div>
+                    )}
+
+                    {/* Symmetry */}
+                    {diamondData.attributes.symmetry.length > 0 && (
+                      <div>
+                        <h4 className="text-xs font-semibold uppercase text-gray-700 mb-4">
+                          Symmetry
+                        </h4>
+                        <RangeSlider
+                          min={0}
+                          max={diamondData.attributes.symmetry.length - 1}
+                          values={filters.symmetry}
+                          onChange={(val) =>
+                            setFilters((prev) => ({ ...prev, symmetry: val }))
+                          }
+                          labels={diamondData.attributes.symmetry}
+                        />
+                      </div>
+                    )}
+
+                    {/* Fluorescence */}
+                    {diamondData.attributes.fluorescence.length > 0 && (
+                      <div>
+                        <h4 className="text-xs font-semibold uppercase text-gray-700 mb-4">
+                          Fluorescence
+                        </h4>
+                        <RangeSlider
+                          min={0}
+                          max={diamondData.attributes.fluorescence.length - 1}
+                          values={filters.fluorescence}
+                          onChange={(val) =>
+                            setFilters((prev) => ({ ...prev, fluorescence: val }))
+                          }
+                          labels={diamondData.attributes.fluorescence}
+                        />
+                      </div>
+                    )}
+
+                    {/* Carat */}
+                    <div>
+                      <h4 className="text-xs font-semibold uppercase text-gray-700 mb-4">
+                        Carat
+                      </h4>
+                      <RangeSlider
+                        min={0}
+                        max={10}
+                        values={filters.caratRange}
+                        onChange={(val) =>
+                          setFilters((prev) => ({ ...prev, caratRange: val }))
+                        }
+                      />
+                    </div>
+
+                    {/* Price */}
+                    <div>
+                      <h4 className="text-xs font-semibold uppercase text-gray-700 mb-4">
+                        Price
+                      </h4>
+                      <RangeSlider
+                        min={0}
+                        max={50000}
+                        values={filters.priceRange}
+                        onChange={(val) =>
+                          setFilters((prev) => ({ ...prev, priceRange: val }))
+                        }
+                        unit="$"
+                      />
+                    </div>
+
+                    {/* Certification */}
+                    {diamondData.attributes.certification.length > 0 && (
+                      <div>
+                        <h4 className="text-xs font-semibold uppercase text-gray-700 mb-4">
+                          Certification
+                        </h4>
+                        <div className="flex flex-col gap-3">
+                          {diamondData.attributes.certification.map((cert) => (
+                            <label
+                              key={cert}
+                              className="flex items-center cursor-pointer group"
+                            >
+                              <input
+                                type="checkbox"
+                                checked={filters.certification.includes(cert)}
+                                onChange={() => toggleCertification(cert)}
+                                className="w-4 h-4 rounded border-gray-300 text-gray-900 focus:ring-gray-900"
+                              />
+                              <span className="ml-2 text-xs text-gray-700 group-hover:text-gray-900">
+                                {cert}
+                              </span>
+                            </label>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Footer - Action Buttons */}
+                  <div className="border-t border-gray-200 p-4 bg-white">
+                    <div className="flex gap-3">
+                      <button
+                        onClick={clearFilters}
+                        className="flex-1 px-4 py-3 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+                      >
+                        Clear All
+                      </button>
+                      <button
+                        onClick={() => setShowMobileFilters(false)}
+                        className="flex-1 px-4 py-3 bg-[#000B58] text-white rounded-lg text-sm font-medium hover:bg-[#000B58]/90 transition-colors"
+                      >
+                        View Results ({filteredDiamonds.length})
+                      </button>
+                    </div>
+                  </div>
+                </motion.div>
+              </>
+            )}
+          </AnimatePresence>
         </div>
       </div>
 
