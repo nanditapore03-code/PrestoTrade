@@ -353,33 +353,51 @@ const JewelryDetailPage = () => {
    
           </div>
 
-          <div className="lg:hidden relative overflow-hidden aspect-[4/5]">
-            <AnimatePresence mode="wait">
-              <motion.img
-                key={currentIndex}
-                src={images[currentIndex]}
-                alt={`${product.name} ${currentIndex + 1}`}
-                className="w-full h-full absolute inset-0"
-                initial={{ opacity: 0, x: 50 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -50 }}
-                transition={{ duration: 0.5, ease: "easeInOut" }}
-              />
-            </AnimatePresence>
+       <div className="lg:hidden relative overflow-hidden aspect-[4/5]">
+  <AnimatePresence mode="wait">
+    <motion.img
+      key={currentIndex}
+      src={images[currentIndex]}
+      alt={`${product.name} ${currentIndex + 1}`}
+      className="w-full h-full absolute inset-0"
+      initial={{ opacity: 0, x: 50 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: -50 }}
+      transition={{ duration: 0.5, ease: "easeInOut" }}
+      drag="x"
+      dragConstraints={{ left: 0, right: 0 }}
+      dragElastic={1}
+      onDragEnd={(e, { offset, velocity }) => {
+        const swipe = Math.abs(offset.x) * velocity.x;
+        
+        if (swipe > 10000 || offset.x > 100) {
+          // Swiped right - go to previous
+          setCurrentIndex((prev) => 
+            prev === 0 ? images.length - 1 : prev - 1
+          );
+        } else if (swipe < -10000 || offset.x < -100) {
+          // Swiped left - go to next
+          setCurrentIndex((prev) => 
+            prev === images.length - 1 ? 0 : prev + 1
+          );
+        }
+      }}
+    />
+  </AnimatePresence>
 
-            {/* Navigation dots */}
-            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2">
-              {images.map((_, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => setCurrentIndex(idx)}
-                  className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
-                    currentIndex === idx ? "bg-black" : "bg-gray-300"
-                  }`}
-                />
-              ))}
-            </div>
-          </div>
+  {/* Navigation dots */}
+  <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+    {images.map((_, idx) => (
+      <button
+        key={idx}
+        onClick={() => setCurrentIndex(idx)}
+        className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
+          currentIndex === idx ? "bg-black" : "bg-gray-300"
+        }`}
+      />
+    ))}
+  </div>
+</div>
 
           {/* Right Side - Product Details (35%) - Sticky */}
           <div className="lg:w-[35%]">
