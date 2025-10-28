@@ -545,7 +545,7 @@ const DiamondPage = () => {
     <div className="min-h-screen bg-white">
       <div className="border-b border-gray-200">
         <div className="max-w-[1600px] mx-auto px-8 py-6">
-<div className="flex items-center justify-between gap-6  pb-4">
+<div className="flex items-center md:flex-row flex-col md:justify-between gap-6  pb-4">
   {/* Title */}
   <h1 className="text-2xl font-light capitalize tracking-wide text-royalblue whitespace-nowrap">
     {selectedCategory} Diamonds
@@ -598,7 +598,7 @@ const DiamondPage = () => {
 
           {/* Subcategory Tabs */}
 <div className="border-b border-gray-200 my-8">
-  <div className="flex flex-wrap gap-6 relative">
+  <div className="flex flex-wrap gap-4 md:gap-6 relative">
     {subcategories.map((subcategory) => {
       const isActive = selectedSubcategory === subcategory.id;
       return (
