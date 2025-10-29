@@ -448,7 +448,7 @@ const DiamondDetailsPage = () => {
 
    
       </div>
-      <section className="px-20">
+      <section className=" px-4 md:px-20">
         {/* Main Diamond Listing Section */}
 
 
@@ -456,10 +456,10 @@ const DiamondDetailsPage = () => {
 
 {diamondProducts.length > 0 && (
   <section className="mt-20">
-    <div className="flex justify-between items-center">
+    <div className="flex mb-4 md:mb-8 justify-between items-center">
 
     
-    <h2 className="text-2xl font-light text-gray-900 mb-8 text-center">
+    <h2 className="text-xl md:text-2xl font-light text-gray-900  text-center">
       Recently Viewed Diamonds
     </h2>
     <div className="flex border border-gray-300 rounded overflow-hidden">
@@ -583,7 +583,7 @@ const DiamondDetailsPage = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8, duration: 1 }}
-          className="mt-8 flex gap-4"
+          className="mt-8 flex md:flex-row flex-col gap-4"
         >
           <button className="px-8 py-3 bg-white text-black font-medium rounded-full hover:bg-gray-200 transition">
             Explore Collection

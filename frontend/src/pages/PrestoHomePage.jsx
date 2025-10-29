@@ -16,6 +16,14 @@ import earrings from "../assets/jewelry/earrings.webp";
 import bracelet from "../assets/jewelry/bracelet.webp";
 import necklace from "../assets/jewelry/necklace.webp";
 
+import classic from "../assets/home_diamonds/classic_ring.png";
+import halo from "../assets/home_diamonds/halo_ring.png";
+import three_stone from "../assets/home_diamonds/three_stone_ring.png";
+import vintage from "../assets/home_diamonds/vintage_ring.png";
+import modern from "../assets/home_diamonds/modern_ring.png";
+import pave from "../assets/home_diamonds/pave_ring.png";
+
+
 import oval_cut from "../assets/home_diamonds/oval.png";
 import lozenge_cut from "../assets/home_diamonds/lozenge.png";
 import princess_cut from "../assets/home_diamonds/princess.png";
@@ -1113,32 +1121,38 @@ function FancyColorDiamonds() {
   const rings = [
     {
       title: "Classic Solitaire",
-      img: "https://images.pexels.com/photos/16219489/pexels-photo-16219489.jpeg",
+      // img: "https://images.pexels.com/photos/16219489/pexels-photo-16219489.jpeg",
+      img:classic,
       desc: "Timeless elegance",
     },
     {
       title: "Halo Setting",
-      img: "https://images.pexels.com/photos/9080072/pexels-photo-9080072.jpeg",
+      // img: "https://images.pexels.com/photos/9080072/pexels-photo-9080072.jpeg",
+      img:halo,
       desc: "Surrounded by brilliance",
     },
     {
       title: "Three-Stone",
-      img: "https://images.pexels.com/photos/27686743/pexels-photo-27686743.jpeg",
+      // img: "https://images.pexels.com/photos/27686743/pexels-photo-27686743.jpeg",
+      img:three_stone,
       desc: "Past, present, future",
     },
     {
       title: "Vintage Design",
-      img: "https://images.pexels.com/photos/5737277/pexels-photo-5737277.jpeg",
+      // img: "https://images.pexels.com/photos/5737277/pexels-photo-5737277.jpeg",
+      img:vintage,
       desc: "Romantic heritage",
     },
     {
       title: "Modern Twist",
-      img: "https://images.pexels.com/photos/32988536/pexels-photo-32988536.jpeg",
+      // img: "https://images.pexels.com/photos/32988536/pexels-photo-32988536.jpeg",
+      img:modern,
       desc: "Contemporary sophistication",
     },
     {
       title: "Pave Band",
-      img: "https://images.pexels.com/photos/30206324/pexels-photo-30206324.jpeg",
+      // img: "https://images.pexels.com/photos/30206324/pexels-photo-30206324.jpeg",
+      img:pave,
       desc: "Sparkling accents",
     },
   ];
@@ -1164,13 +1178,14 @@ function FancyColorDiamonds() {
         {rings.map((ring, idx) => (
           <motion.div
             key={idx}
-            className="relative overflow-hidden rounded-xl group cursor-pointer"
+            className="relative overflow-hidden shadow-lg border bg-gradient-to-tr from-red-50 via-white to-blue-50  group cursor-pointer"
           >
-            <div className="aspect-[3/4] overflow-hidden">
+            <div className="aspect-[3/4] 
+ overflow-hidden">
               <img
                 src={ring.img}
                 alt={ring.title}
-                className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-125"
+                className="w-fit h-full  transition-transform duration-300 group-hover:scale-110"
               />
             </div>
 
@@ -1178,9 +1193,9 @@ function FancyColorDiamonds() {
             <div className="absolute inset-0 bg-black/40 opacity-0 transition-opacity duration-700"></div>
 
             {/* Text overlay (always visible) */}
-            <div className="absolute bottom-6 left-6 right-6 text-white transition-colors duration-500">
-              <h3 className="text-xl font-light mb-1">{ring.title}</h3>
-              <p className="text-sm text-gray-200">{ring.desc}</p>
+            <div className="absolute bottom-6 left-6 right-6 text-black text-center transition-colors duration-500">
+              <h3 className="text-xl uppercase font-light mb-1">{ring.title}</h3>
+              <p className="text-sm text-gray-900">{ring.desc}</p>
             </div>
           </motion.div>
         ))}

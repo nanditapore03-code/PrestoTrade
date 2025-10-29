@@ -335,12 +335,12 @@ const JewelryDetailPage = () => {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.6, delay: idx * 0.1 }}
-                  className="bg-stone-100 aspect-[4/5]  "
+                  className="bg-stone-100 w-fit flex items-center justify-center aspect-[4/5]  "
                 >
                   <img
                     src={imgSrc}
                     alt={`${product.name} ${idx + 1}`}
-                    className="w-full h-full"
+                    className="w-fit "
                   />
                 </motion.div>
               ))}

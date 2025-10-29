@@ -361,6 +361,7 @@ const messages = [
           ${scrolled ? "fixed top-0" : ""}
           `}
       >
+        
           <AnnouncementBar className={`${scrolled ? "hidden": ""}`}/>
         <div className="w-full px-6 md:px-10 py-4 gap-4 flex flex-col">
           {/* <motion.div
@@ -420,7 +421,7 @@ Fine Jewelry & Fancy Shape Diamonds
 
               <span className="text-[#000B58] text-left uppercase text-lg md:text-2xl  font-serif">Presto Trade</span>
               <span className={`text-[#000B58]  hidden md:block text-left uppercase font-medium md:text-xs  `}>
-Fine Jewelry & Fancy Shape Diamonds
+                Fine Jewelry & Fancy Shape Diamonds
               </span>
                 </div>
                 </div>
@@ -441,6 +442,7 @@ Fine Jewelry & Fancy Shape Diamonds
                       transition={{ duration: 0.3, ease: "easeOut" }}
                     />
                   </Link> */}
+
               {Object.keys(menuData).map((key) => (
                 <div
                   key={key}
@@ -586,7 +588,7 @@ Fine Jewelry & Fancy Shape Diamonds
               >
                 <div className="p-6">
                   {/* Logo/Header */}
-                  <div className="flex items-center justify-between  pb-6 border-b">
+                  <div className="flex items-center text-royalblue justify-between  pb-6 border-b">
                     <h2 className="text-xl font-normal tracking-[0.2em]">
                       MENU
                     </h2>
@@ -594,6 +596,7 @@ Fine Jewelry & Fancy Shape Diamonds
                       <X className="w-6 h-6" />
                     </button>
                   </div>
+
                   {/* Login/Account Section */}
                   {/* <div className="mt-8 pt-6 ">
                     <motion.button
@@ -619,6 +622,8 @@ Fine Jewelry & Fancy Shape Diamonds
                     </motion.button>
                   </div> */}
 
+    
+                  
                   {/* Main Navigation */}
                   <nav className="space-y-2 overflow-x-auto">
        
@@ -731,9 +736,9 @@ Fine Jewelry & Fancy Shape Diamonds
                   <div className=" fixed w-[75%] bg-white bottom-4 left-0 right-0 flex z-50 items-center justify-center">
                     <motion.button
                       whileHover={{ x: 4 }}
-                      className="flex items-center justify-center w-full gap-3 rounded-xl border border-gray-800 py-3 px-4 text-sm font-medium tracking-wider ml-6 text-white
-                   bg-gray-800 bg-[length:200%_auto]
-                   hover:bg-gray-900  hover:shadow-md transition-all duration-300 ease-in-out"
+                      className="flex items-center justify-center w-full gap-3 rounded-xl border border-royalblue py-3 px-4 text-sm font-medium tracking-wider ml-6 text-white
+                   bg-royalblue bg-[length:200%_auto]
+                   hover:bg-royalblue  hover:shadow-md transition-all duration-300 ease-in-out"
                     >
                       <User className="w-5 h-5" />
                       <span>Login</span>
