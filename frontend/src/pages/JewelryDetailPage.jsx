@@ -205,8 +205,8 @@ const JewelryDetailPage = () => {
     return () => clearInterval(interval);
   }, [images.length]);
   const imageList = currentImages?.gallery
-  ? [currentImages.main, currentImages.hover, ...currentImages.gallery]
-  : [currentImages.main, currentImages.hover];
+    ? [currentImages.main, currentImages.hover, ...currentImages.gallery]
+    : [currentImages.main, currentImages.hover];
 
   return (
     <div className="bg-white min-h-screen">
@@ -262,15 +262,14 @@ const JewelryDetailPage = () => {
                   animate={{ x: isAddToCartHovered ? "0%" : "-100%" }}
                   transition={{ duration: 0.4, ease: "easeInOut" }}
                 />
- <motion.span
+                <motion.span
                   className="relative md:hidden  z-10 "
                   animate={{
                     color: isAddToCartHovered ? "#000B58" : "#FFFFFF",
                   }}
                   transition={{ duration: 0.3, ease: "easeInOut" }}
                 >
-                  <ShoppingBag  size={18} />
-           
+                  <ShoppingBag size={18} />
                 </motion.span>
                 <motion.span
                   className="relative hidden md:block  z-10 md:flex items-center justify-center gap-2"
@@ -279,7 +278,7 @@ const JewelryDetailPage = () => {
                   }}
                   transition={{ duration: 0.3, ease: "easeInOut" }}
                 >
-                  <ShoppingBag  size={18} />
+                  <ShoppingBag size={18} />
                   ADD TO BAG
                 </motion.span>
               </button>
@@ -288,116 +287,111 @@ const JewelryDetailPage = () => {
         )}
       </AnimatePresence>
 
-    <div className="hidden md:flex justify-between items-center w-full px-12 py-4 text-sm text-gray-600">
-      {/* Left: Breadcrumb */}
-      <div className="flex items-center space-x-2">
-        {/* Home */}
-        <span
-          className="cursor-pointer hover:text-black transition-colors"
-          onClick={() => navigate("/")}
-        >
-          Home
-        </span>
-        <ChevronRight className="w-4 h-4 text-gray-400" />
+      <div className="hidden md:flex justify-between items-center w-full px-12 py-4 text-sm text-gray-600">
+        {/* Left: Breadcrumb */}
+        <div className="flex items-center space-x-2">
+          {/* Home */}
+          <span
+            className="cursor-pointer hover:text-black transition-colors"
+            onClick={() => navigate("/")}
+          >
+            Home
+          </span>
+          <ChevronRight className="w-4 h-4 text-gray-400" />
 
-        {/* Category */}
-        <span
-          className="cursor-pointer hover:text-black transition-colors"
-          onClick={() => navigate("/jewelry/rings")}
-        >
-          Rings
-        </span>
-        <ChevronRight className="w-4 h-4 text-gray-400" />
+          {/* Category */}
+          <span
+            className="cursor-pointer hover:text-black transition-colors"
+            onClick={() => navigate("/jewelry/rings")}
+          >
+            Rings
+          </span>
+          <ChevronRight className="w-4 h-4 text-gray-400" />
 
-        {/* Current Product */}
-        <span className="text-black font-medium truncate max-w-[200px]">
-          {product?.name || "Diamond"}
-        </span>
+          {/* Current Product */}
+          <span className="text-black font-medium truncate max-w-[200px]">
+            {product?.name || "Diamond"}
+          </span>
+        </div>
+
+        {/* Right: Back Button */}
+        <button
+          onClick={() => navigate(-1)}
+          className="flex items-center gap-1 text-gray-600 hover:text-black transition-colors"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          <span>Back</span>
+        </button>
       </div>
-
-      {/* Right: Back Button */}
-      <button
-        onClick={() => navigate(-1)}
-        className="flex items-center gap-1 text-gray-600 hover:text-black transition-colors"
-      >
-        <ArrowLeft className="w-4 h-4" />
-        <span>Back</span>
-      </button>
-    </div>
 
       <div ref={contentRef} className="w-full mx-auto px-4 md:px-12 pb-12">
         <div className="flex flex-col lg:flex-row gap-4 md:gap-16">
           {/* Left Side - Images (65%) */}
           <div className=" hidden md:block lg:w-[65%]">
-
-
-  <div className="grid grid-cols-2 gap-2">
-    {imageList.map((imgSrc, idx) => (
-      <motion.div
-        key={idx}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.6, delay: idx * 0.1 }}
-        className="bg-stone-100 aspect-[4/5]  "
-      >
-        <img
-          src={imgSrc}
-          alt={`${product.name} ${idx + 1}`}
-          className="w-full h-full"
-        />
-      </motion.div>
-    ))}
-  </div>
-
-
-   
+            <div className="grid grid-cols-2 gap-2">
+              {imageList.map((imgSrc, idx) => (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.6, delay: idx * 0.1 }}
+                  className="bg-stone-100 aspect-[4/5]  "
+                >
+                  <img
+                    src={imgSrc}
+                    alt={`${product.name} ${idx + 1}`}
+                    className="w-full h-full"
+                  />
+                </motion.div>
+              ))}
+            </div>
           </div>
 
-       <div className="lg:hidden relative overflow-hidden aspect-[4/5]">
-  <AnimatePresence mode="wait">
-    <motion.img
-      key={currentIndex}
-      src={images[currentIndex]}
-      alt={`${product.name} ${currentIndex + 1}`}
-      className="w-full h-full absolute inset-0"
-      initial={{ opacity: 0, x: 50 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: -50 }}
-      transition={{ duration: 0.5, ease: "easeInOut" }}
-      drag="x"
-      dragConstraints={{ left: 0, right: 0 }}
-      dragElastic={1}
-      onDragEnd={(e, { offset, velocity }) => {
-        const swipe = Math.abs(offset.x) * velocity.x;
-        
-        if (swipe > 10000 || offset.x > 100) {
-          // Swiped right - go to previous
-          setCurrentIndex((prev) => 
-            prev === 0 ? images.length - 1 : prev - 1
-          );
-        } else if (swipe < -10000 || offset.x < -100) {
-          // Swiped left - go to next
-          setCurrentIndex((prev) => 
-            prev === images.length - 1 ? 0 : prev + 1
-          );
-        }
-      }}
-    />
-  </AnimatePresence>
+          <div className="lg:hidden relative overflow-hidden aspect-[4/5]">
+            <AnimatePresence mode="wait">
+              <motion.img
+                key={currentIndex}
+                src={images[currentIndex]}
+                alt={`${product.name} ${currentIndex + 1}`}
+                className="w-full h-full absolute inset-0"
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -50 }}
+                transition={{ duration: 0.5, ease: "easeInOut" }}
+                drag="x"
+                dragConstraints={{ left: 0, right: 0 }}
+                dragElastic={1}
+                onDragEnd={(e, { offset, velocity }) => {
+                  const swipe = Math.abs(offset.x) * velocity.x;
 
-  {/* Navigation dots */}
-  <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2 z-10">
-    {images.map((_, idx) => (
-      <button
-        key={idx}
-        onClick={() => setCurrentIndex(idx)}
-        className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
-          currentIndex === idx ? "bg-black" : "bg-gray-300"
-        }`}
-      />
-    ))}
-  </div>
-</div>
+                  if (swipe > 10000 || offset.x > 100) {
+                    // Swiped right - go to previous
+                    setCurrentIndex((prev) =>
+                      prev === 0 ? images.length - 1 : prev - 1
+                    );
+                  } else if (swipe < -10000 || offset.x < -100) {
+                    // Swiped left - go to next
+                    setCurrentIndex((prev) =>
+                      prev === images.length - 1 ? 0 : prev + 1
+                    );
+                  }
+                }}
+              />
+            </AnimatePresence>
+
+            {/* Navigation dots */}
+            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+              {images.map((_, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setCurrentIndex(idx)}
+                  className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
+                    currentIndex === idx ? "bg-black" : "bg-gray-300"
+                  }`}
+                />
+              ))}
+            </div>
+          </div>
 
           {/* Right Side - Product Details (35%) - Sticky */}
           <div className="lg:w-[35%]">
@@ -415,7 +409,9 @@ const JewelryDetailPage = () => {
                         {product.badge}
                       </div>
                     )}
-                    <h1 className="text-xl md:text-3xl font-medium text-royalblue mb-1">{product.name}</h1>
+                    <h1 className="text-xl md:text-3xl font-medium text-royalblue mb-1">
+                      {product.name}
+                    </h1>
                     <p className="text-sm text-gray-600">{product.material}</p>
                   </div>
                   <button
@@ -481,10 +477,10 @@ const JewelryDetailPage = () => {
                   </div>
                   <div
                     className="
-    flex flex-wrap lg:flex-nowrap
-    gap-2 pb-2
-    overflow-x-auto lg:overflow-visible
-  "
+                              flex flex-wrap lg:flex-nowrap
+                              gap-2 pb-2
+                              overflow-x-auto lg:overflow-visible
+                            "
                   >
                     {sizes.map((size) => (
                       <button
@@ -727,77 +723,77 @@ const JewelryDetailPage = () => {
             </div>
           </div>
         </div>
-    </div>
-        {/* Mid Banner */}
-         <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.8 }}
-      className="relative w-full bg-gray-100 my-16 py-12"
-    >
-      <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 items-center gap-8 px-6">
-        {/* LEFT: Video */}
-        <motion.div
-          initial={{ opacity: 0, x: -50 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="overflow-hidden rounded-2xl shadow-lg"
-        >
-          <video
-            src="https://www.pexels.com/download/video/6263491/"
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="w-full h-[350px] lg:h-[450px] object-cover"
-          />
-        </motion.div>
-
-        {/* RIGHT: Text Content */}
-        <motion.div
-          initial={{ opacity: 0, x: 50 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="text-center lg:text-left"
-        >
-          <motion.p
-            initial={{ y: 20, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.3 }}
-            className="text-xs tracking-widest uppercase text-gray-600 mb-2"
-          >
-            Handmade with Love
-          </motion.p>
-
-          <motion.h2
-            initial={{ y: 20, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.4 }}
-            className="text-3xl font-light text-gray-900 mb-4"
-          >
-            Our Craftsmanship
-          </motion.h2>
-
-          <motion.p
-            initial={{ y: 20, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.6 }}
-            className="text-gray-700 text-sm leading-relaxed max-w-md mx-auto lg:mx-0"
-          >
-            Each piece is carefully handcrafted by skilled artisans who
-            dedicate their time and heart to ensure every detail reflects
-            precision, elegance, and timeless beauty.
-          </motion.p>
-        </motion.div>
       </div>
-    </motion.div>
-        {/* <motion.div
+      {/* Mid Banner */}
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8 }}
+        className="relative w-full bg-gray-100 my-16 py-12"
+      >
+        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 items-center gap-8 px-6">
+          {/* LEFT: Video */}
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="overflow-hidden rounded-2xl shadow-lg"
+          >
+            <video
+              src="https://www.pexels.com/download/video/6263491/"
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="w-full h-[350px] lg:h-[450px] object-cover"
+            />
+          </motion.div>
+
+          {/* RIGHT: Text Content */}
+          <motion.div
+            initial={{ opacity: 0, x: 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="text-center lg:text-left"
+          >
+            <motion.p
+              initial={{ y: 20, opacity: 0 }}
+              whileInView={{ y: 0, opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3 }}
+              className="text-xs tracking-widest uppercase text-gray-600 mb-2"
+            >
+              Handmade with Love
+            </motion.p>
+
+            <motion.h2
+              initial={{ y: 20, opacity: 0 }}
+              whileInView={{ y: 0, opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.4 }}
+              className="text-3xl font-light text-gray-900 mb-4"
+            >
+              Our Craftsmanship
+            </motion.h2>
+
+            <motion.p
+              initial={{ y: 20, opacity: 0 }}
+              whileInView={{ y: 0, opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.6 }}
+              className="text-gray-700 text-sm leading-relaxed max-w-md mx-auto lg:mx-0"
+            >
+              Each piece is carefully handcrafted by skilled artisans who
+              dedicate their time and heart to ensure every detail reflects
+              precision, elegance, and timeless beauty.
+            </motion.p>
+          </motion.div>
+        </div>
+      </motion.div>
+      {/* <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
@@ -843,169 +839,167 @@ const JewelryDetailPage = () => {
           </div>
         </motion.div> */}
 
-        {/* Recommendation Carousel */}
-        <div className="w-full mx-auto px-4 md:px-12 pb-12 mb-16 md:hidden">
-          <h3 className="text-2xl font-light mb-6 text-center">
-            You May Also Like
-          </h3>
+      {/* Recommendation Carousel */}
+      <div className="w-full mx-auto px-4 md:px-12 pb-12 mb-16 md:hidden">
+        <h3 className="text-2xl font-light mb-6 text-center">
+          You May Also Like
+        </h3>
 
-          {/* Carousel wrapper */}
+        {/* Carousel wrapper */}
+        <motion.div
+          ref={carouselRef}
+          className="cursor-grab overflow-hidden"
+          onDragStart={() => setIsDragging(true)}
+          onDragEnd={() => setIsDragging(false)}
+        >
           <motion.div
-            ref={carouselRef}
-            className="cursor-grab overflow-hidden"
-            onDragStart={() => setIsDragging(true)}
-            onDragEnd={() => setIsDragging(false)}
+            className="flex gap-4"
+            drag="x"
+            dragConstraints={{
+              left: -((recommendedProducts.length - 1) * 250),
+              right: 0,
+            }}
+            dragElastic={0.15}
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
           >
-            <motion.div
-              className="flex gap-4"
-              drag="x"
-              dragConstraints={{
-                left: -((recommendedProducts.length - 1) * 250),
-                right: 0,
-              }}
-              dragElastic={0.15}
-              transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            >
-              {recommendedProducts.map((recProduct, index) => (
-                <motion.div
-                  key={recProduct.id}
-                  className="
-                flex-shrink-0
-                w-[85%] sm:w-[60%] md:w-[45%] lg:w-[23%]
-              "
-                >
-                  <ProductCard
-                    product={recProduct}
-                    index={index}
-                    productType="rings"
-                    onFavoriteToggle={toggleFavorite}
-                    onAddToCart={handleAddToCart}
-                    selectedColor={
-                      productColors[recProduct.id] || recProduct.metalColors[0]
-                    }
-                    onColorChange={(productId, color) => {
-                      setProductColors((prev) => ({
-                        ...prev,
-                        [productId]: color,
-                      }));
-                    }}
-                    showActions={false}
-                    showColorSelector={recProduct.metalColors.length > 1}
-                  />
-                </motion.div>
-              ))}
-            </motion.div>
-          </motion.div>
-        </div>
-        <div className=" w-full mx-auto px-4 md:px-12 pb-12 mb-16 hidden md:block">
-          <h3 className="text-2xl font-light mb-6 text-center">
-            You May Also Like
-          </h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {recommendedProducts.map((recProduct, index) => (
-              <ProductCard
+              <motion.div
                 key={recProduct.id}
-                product={recProduct}
-                index={index}
-                productType="rings"
-                onFavoriteToggle={toggleFavorite}
-                onAddToCart={handleAddToCart}
-                // isFavorite={favorites.includes(product.id)}
-                selectedColor={
-                  productColors[recProduct.id] || recProduct.metalColors[0]
-                }
-                onColorChange={(productId, color) => {
-                  setProductColors((prev) => ({ ...prev, [productId]: color }));
-                }}
-                showActions={false}
-                showColorSelector={recProduct.metalColors.length > 1}
-              />
-            ))}
-          </div>
-        </div>
-        {/* Recently Viewed */}
-        <div className="w-full mx-auto px-4 md:px-12 pb-12 mb-16 md:hidden">
-          <h3 className="text-2xl font-light mb-6 text-center">
-            Recently Viewed
-          </h3>
-
-          {/* Carousel wrapper */}
-          <motion.div
-            ref={carouselRef}
-            className="cursor-grab overflow-hidden"
-            onDragStart={() => setIsDragging(true)}
-            onDragEnd={() => setIsDragging(false)}
-            whileTap={{ cursor: "grabbing" }}
-          >
-            <motion.div
-              className="flex gap-4"
-              drag="x"
-              dragConstraints={{
-                left: -((viewedProducts.length - 1) * 250),
-                right: 0,
-              }}
-              dragElastic={0.15}
-              transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            >
-              {viewedProducts.map((viewedProduct, index) => (
-                <motion.div
-                  key={viewedProduct.id}
-                  className="
+                className="
                 flex-shrink-0
                 w-[85%] sm:w-[60%] md:w-[45%] lg:w-[23%]
               "
-                >
-                  <ProductCard
-                    product={viewedProduct}
-                    index={index}
-                    productType="rings"
-                    onFavoriteToggle={toggleFavorite}
-                    onAddToCart={handleAddToCart}
-                    selectedColor={
-                      productColors[viewedProduct.id] ||
-                      viewedProduct.metalColors[0]
-                    }
-                    onColorChange={(productId, color) => {
-                      setProductColors((prev) => ({
-                        ...prev,
-                        [productId]: color,
-                      }));
-                    }}
-                    showActions={false}
-                    showColorSelector={viewedProduct.metalColors.length > 1}
-                  />
-                </motion.div>
-              ))}
-            </motion.div>
-          </motion.div>
-        </div>
-        <div className="w-full mx-auto px-4 md:px-12 pb-12 mb-16 hidden md:block">
-          <h3 className="text-2xl font-light mb-6 text-center">
-            Recently Viewed
-          </h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {ringProducts.slice(0, 4).map((viewedProduct, index) => (
-              <ProductCard
-                key={viewedProduct.id}
-                product={viewedProduct}
-                index={index}
-                productType="rings"
-                onFavoriteToggle={toggleFavorite}
-                onAddToCart={handleAddToCart}
-                selectedColor={
-                  productColors[viewedProduct.id] ||
-                  viewedProduct.metalColors[0]
-                }
-                onColorChange={(productId, color) => {
-                  setProductColors((prev) => ({ ...prev, [productId]: color }));
-                }}
-                showActions={false}
-                showColorSelector={viewedProduct.metalColors.length > 1}
-              />
+              >
+                <ProductCard
+                  product={recProduct}
+                  index={index}
+                  productType="rings"
+                  onFavoriteToggle={toggleFavorite}
+                  onAddToCart={handleAddToCart}
+                  selectedColor={
+                    productColors[recProduct.id] || recProduct.metalColors[0]
+                  }
+                  onColorChange={(productId, color) => {
+                    setProductColors((prev) => ({
+                      ...prev,
+                      [productId]: color,
+                    }));
+                  }}
+                  showActions={false}
+                  showColorSelector={recProduct.metalColors.length > 1}
+                />
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
+        </motion.div>
+      </div>
+      <div className=" w-full mx-auto px-4 md:px-12 pb-12 mb-16 hidden md:block">
+        <h3 className="text-2xl font-light mb-6 text-center">
+          You May Also Like
+        </h3>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {recommendedProducts.map((recProduct, index) => (
+            <ProductCard
+              key={recProduct.id}
+              product={recProduct}
+              index={index}
+              productType="rings"
+              onFavoriteToggle={toggleFavorite}
+              onAddToCart={handleAddToCart}
+              // isFavorite={favorites.includes(product.id)}
+              selectedColor={
+                productColors[recProduct.id] || recProduct.metalColors[0]
+              }
+              onColorChange={(productId, color) => {
+                setProductColors((prev) => ({ ...prev, [productId]: color }));
+              }}
+              showActions={false}
+              showColorSelector={recProduct.metalColors.length > 1}
+            />
+          ))}
         </div>
-  
+      </div>
+      {/* Recently Viewed */}
+      <div className="w-full mx-auto px-4 md:px-12 pb-12 mb-16 md:hidden">
+        <h3 className="text-2xl font-light mb-6 text-center">
+          Recently Viewed
+        </h3>
+
+        {/* Carousel wrapper */}
+        <motion.div
+          ref={carouselRef}
+          className="cursor-grab overflow-hidden"
+          onDragStart={() => setIsDragging(true)}
+          onDragEnd={() => setIsDragging(false)}
+          whileTap={{ cursor: "grabbing" }}
+        >
+          <motion.div
+            className="flex gap-4"
+            drag="x"
+            dragConstraints={{
+              left: -((viewedProducts.length - 1) * 250),
+              right: 0,
+            }}
+            dragElastic={0.15}
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+          >
+            {viewedProducts.map((viewedProduct, index) => (
+              <motion.div
+                key={viewedProduct.id}
+                className="
+                flex-shrink-0
+                w-[85%] sm:w-[60%] md:w-[45%] lg:w-[23%]
+              "
+              >
+                <ProductCard
+                  product={viewedProduct}
+                  index={index}
+                  productType="rings"
+                  onFavoriteToggle={toggleFavorite}
+                  onAddToCart={handleAddToCart}
+                  selectedColor={
+                    productColors[viewedProduct.id] ||
+                    viewedProduct.metalColors[0]
+                  }
+                  onColorChange={(productId, color) => {
+                    setProductColors((prev) => ({
+                      ...prev,
+                      [productId]: color,
+                    }));
+                  }}
+                  showActions={false}
+                  showColorSelector={viewedProduct.metalColors.length > 1}
+                />
+              </motion.div>
+            ))}
+          </motion.div>
+        </motion.div>
+      </div>
+      <div className="w-full mx-auto px-4 md:px-12 pb-12 mb-16 hidden md:block">
+        <h3 className="text-2xl font-light mb-6 text-center">
+          Recently Viewed
+        </h3>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {ringProducts.slice(0, 4).map((viewedProduct, index) => (
+            <ProductCard
+              key={viewedProduct.id}
+              product={viewedProduct}
+              index={index}
+              productType="rings"
+              onFavoriteToggle={toggleFavorite}
+              onAddToCart={handleAddToCart}
+              selectedColor={
+                productColors[viewedProduct.id] || viewedProduct.metalColors[0]
+              }
+              onColorChange={(productId, color) => {
+                setProductColors((prev) => ({ ...prev, [productId]: color }));
+              }}
+              showActions={false}
+              showColorSelector={viewedProduct.metalColors.length > 1}
+            />
+          ))}
+        </div>
+      </div>
 
       {/* Bottom Banner */}
       <motion.div

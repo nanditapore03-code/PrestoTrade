@@ -308,7 +308,7 @@ const DiamondDetailsPage = () => {
                   <button
                     key={section}
                     onClick={() => setActiveSection(section)}
-                    className={`pb-3 text-xs uppercase tracking-widest whitespace-nowrap transition-colors relative ${
+                    className={`pb-3 text-xs md:text-sm uppercase tracking-widest whitespace-nowrap transition-colors relative ${
                       activeSection === section
                         ? 'text-royalblue'
                         : 'text-gray-700 hover:text-gray-900'
@@ -337,7 +337,7 @@ const DiamondDetailsPage = () => {
                 >
                   {activeSection === 'overview' && (
                     <div className="space-y-8">
-                      <p className="text-gray-600 leading-relaxed font-light text-base">
+                      <p className="text-gray-950 leading-relaxed font-light text-lg">
                         {diamond.detailedDescription || diamond.description}
                       </p>
                       <div className="grid grid-cols-2 gap-4">
@@ -348,10 +348,10 @@ const DiamondDetailsPage = () => {
                           { label: 'Category', value: diamond.category },
                         ].map((item, idx) => (
                           <div key={idx} className="py-4 border-t border-gray-100">
-                            <div className="text-xs uppercase tracking-widest text-gray-400 mb-2">
+                            <div className="md:text-sm text-xs uppercase tracking-widest text-royalblue mb-2">
                               {item.label}
                             </div>
-                            <div className="text-gray-900 font-light">{item.value}</div>
+                            <div className="text-gray-900 text-xs md:text-lg font-light">{item.value}</div>
                           </div>
                         ))}
                       </div>
@@ -369,7 +369,7 @@ const DiamondDetailsPage = () => {
                         diamond.measurements.lengthToWidthRatio && { label: 'L/W Ratio', value: diamond.measurements.lengthToWidthRatio },
                       ].filter(Boolean).map((item, idx) => (
                         <div key={idx} className="py-4 border-t border-gray-100">
-                          <div className="text-xs uppercase tracking-widest text-gray-400 mb-2">
+                          <div className="text-xs uppercase tracking-widest text-royalblue mb-2">
                             {item.label}
                           </div>
                           <div className="text-gray-900 font-light text-lg">{item.value}</div>
