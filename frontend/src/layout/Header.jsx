@@ -306,45 +306,45 @@ const messages = [
         cta: "Start Your Journey",
       },
     },
-    showrooms: {
-      title: "Showrooms",
-      path: "/showrooms",
-      sections: [
-        {
-          title: "Visit Us",
-          items: [
-            { name: "Mumbai Showroom" },
-            { name: "Delhi Showroom" },
-            { name: "Bangalore Showroom" },
-            { name: "Book Appointment" },
-          ],
-        },
-        {
-          title: "Services",
-          items: [
-            { name: "Private Consultation" },
-            { name: "Custom Design" },
-            { name: "Cleaning & Care" },
-            { name: "Appraisals" },
-          ],
-        },
-        {
-          title: "Virtual Experience",
-          items: [
-            { name: "Virtual Showroom" },
-            { name: "Video Consultation" },
-            { name: "Live Chat" },
-          ],
-        },
-      ],
-      featured: {
-        image:
-          "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=600&q=80",
-        title: "Experience Luxury",
-        subtitle: "Visit our showrooms",
-        cta: "Find Location",
-      },
-    },
+    // showrooms: {
+    //   title: "Showrooms",
+    //   path: "/showrooms",
+    //   // sections: [
+    //   //   {
+    //   //     title: "Visit Us",
+    //   //     items: [
+    //   //       { name: "Mumbai Showroom" },
+    //   //       { name: "Delhi Showroom" },
+    //   //       { name: "Bangalore Showroom" },
+    //   //       { name: "Book Appointment" },
+    //   //     ],
+    //   //   },
+    //   //   {
+    //   //     title: "Services",
+    //   //     items: [
+    //   //       { name: "Private Consultation" },
+    //   //       { name: "Custom Design" },
+    //   //       { name: "Cleaning & Care" },
+    //   //       { name: "Appraisals" },
+    //   //     ],
+    //   //   },
+    //   //   {
+    //   //     title: "Virtual Experience",
+    //   //     items: [
+    //   //       { name: "Virtual Showroom" },
+    //   //       { name: "Video Consultation" },
+    //   //       { name: "Live Chat" },
+    //   //     ],
+    //   //   },
+    //   // ],
+    //   // featured: {
+    //   //   image:
+    //   //     "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=600&q=80",
+    //   //   title: "Experience Luxury",
+    //   //   subtitle: "Visit our showrooms",
+    //   //   cta: "Find Location",
+    //   // },
+    // },
   };
 
   const toggleMobileSubmenu = (key) => {
@@ -361,7 +361,7 @@ const messages = [
           ${scrolled ? "fixed top-0" : ""}
           `}
       >
-        
+
           <AnnouncementBar className={`${scrolled ? "hidden": ""}`}/>
         <div className="w-full px-6 md:px-10 py-4 gap-4 flex flex-col">
           {/* <motion.div
@@ -429,43 +429,41 @@ Fine Jewelry & Fancy Shape Diamonds
             </motion.div>
 
               
-            <nav className="hidden mr-28 justify-center lg:flex items-center space-x-12 text-sm uppercase tracking-wider">
-               {/* <Link
-                    to="/"
-                    className="relative font-medium text-gray-800 tracking-[0.1em] transition-opacity  inline-block"
-                  >
-           Home
-                    <motion.div
-                      className="absolute -bottom-2 left-0 right-0 h-0.5 bg-gray-700 origin-left"
-                      initial={{ scaleX: 0 }}
-                      // animate={{ scaleX: activeMenu === key ? 1 : 0 }}
-                      transition={{ duration: 0.3, ease: "easeOut" }}
-                    />
-                  </Link> */}
+          <nav className="hidden mr-28 justify-center lg:flex items-center space-x-12 text-sm uppercase tracking-wider">
+  {/* Static Home link (no hover effect) */}
+  <Link
+    to="/"
+    onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+    className="hover:font-medium text-gray-800 tracking-[0.1em] hover:text-gray-900 transition-colors inline-block"
+  >
+    Home
+  </Link>
 
-              {Object.keys(menuData).map((key) => (
-                <div
-                  key={key}
-                  className="relative group"
-                  onMouseEnter={() => setActiveMenu(key)}
-                  onMouseLeave={() => setActiveMenu(null)}
-                >
-                  <Link
-                    to={menuData[key].path}
-                    onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-                    className="relative font-normal text-gray-800 tracking-[0.1em] transition-opacity  inline-block"
-                  >
-                    {menuData[key].title}
-                    <motion.div
-                      className="absolute -bottom-2 left-0 right-0 h-0.5 bg-gray-700 origin-left"
-                      initial={{ scaleX: 0 }}
-                      animate={{ scaleX: activeMenu === key ? 1 : 0 }}
-                      transition={{ duration: 0.3, ease: "easeOut" }}
-                    />
-                  </Link>
-                </div>
-              ))}
-            </nav>
+  {/* Dynamic menu links */}
+  {Object.keys(menuData).map((key) => (
+    <div
+      key={key}
+      className="relative group"
+      onMouseEnter={() => setActiveMenu(key)}
+      onMouseLeave={() => setActiveMenu(null)}
+    >
+      <Link
+        to={menuData[key].path}
+        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        className="relative font-normal text-gray-800 tracking-[0.1em] transition-opacity inline-block"
+      >
+        {menuData[key].title}
+        <motion.div
+          className="absolute -bottom-2 left-0 right-0 h-0.5 bg-gray-700 origin-left"
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: activeMenu === key ? 1 : 0 }}
+          transition={{ duration: 0.3, ease: 'easeOut' }}
+        />
+      </Link>
+    </div>
+  ))}
+</nav>
+
 
             <div className="flex items-center space-x-4 text-[#000B58] ">
               <button className="hover:opacity-60 transition-opacity hidden md:block">
