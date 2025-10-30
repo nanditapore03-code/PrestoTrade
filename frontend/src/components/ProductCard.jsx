@@ -138,7 +138,7 @@ const ProductCard = ({
         )}
 
         {/* Product Image */}
-       <div className="aspect-[3/4] w-fit flex items-center justify-center bg-stone-200 rounded-2xl overflow-hidden">
+       <div className="aspect-[3/4] w-fit flex items-center justify-center bg-stone-200  overflow-hidden">
   <motion.img
     src={isHovered && currentImages.hover ? currentImages.hover : currentImages.main}
     alt={product.name}

@@ -272,62 +272,79 @@ export default function PrestoHomepage() {
 
      
                {/* Featured Jewelry Category */}
-               <div className="grid md:grid-cols-2 gap-6 mb-12">
-                 <motion.div
-                   initial={{ opacity: 0, x: -30 }}
-                   whileInView={{ opacity: 1, x: 0 }}
-                   viewport={{ once: true }}
-                   transition={{ duration: 0.8 }}
-                   className="relative h-[60vh] overflow-hidden group cursor-pointer"
-                 >
-                   <img
-                     // src="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=1200&q=80"
-                     src="https://images.pexels.com/photos/30721001/pexels-photo-30721001.jpeg"
-                     alt="Necklaces"
-                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                   />
-                   <div className="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-all duration-300" />
-                 <div className="absolute inset-0 flex flex-col items-center justify-end mb-10 text-white text-center px-6">
-  <h3 className="text-4xl md:text-4xl  font-light mb-4">
-    Natural Diamonds
-  </h3>
-  <p className="text-lg font-light mb-6">
-    Earth's rarest treasures with unmatched brilliance
-  </p>
-  {/* <button className="border-2 border-white px-8 py-3 text-xs tracking-widest hover:bg-white hover:text-gray-900 transition-all">
-    Explore Collection
-  </button> */}
+
+
+<div className="grid md:grid-cols-2 gap-6 mb-12">
+
+  {/* Natural Diamonds */}
+  <motion.div
+    initial={{ opacity: 0, x: -30 }}
+    whileInView={{ opacity: 1, x: 0 }}
+    viewport={{ once: true }}
+    transition={{ duration: 0.8 }}
+  >
+    <Link
+      to="/diamonds"
+      onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+      className="relative block h-[60vh] overflow-hidden group cursor-pointer"
+    >
+      <img
+        src="https://images.pexels.com/photos/30721001/pexels-photo-30721001.jpeg"
+        alt="Natural Diamonds"
+        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+      />
+      <div className="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-all duration-300" />
+
+      <div className="absolute inset-0 flex flex-col items-center justify-end mb-10 text-white text-center px-6">
+        <h3 className="text-4xl md:text-4xl font-light mb-4">Natural Diamonds</h3>
+        <p className="text-lg font-light mb-6">
+          Earth's rarest treasures with unmatched brilliance
+        </p>
+
+        <button className="relative overflow-hidden border-2 border-white text-white px-8 py-3 text-xs tracking-widest transition-all duration-300
+          before:absolute before:inset-0 before:bg-white before:scale-x-0 before:origin-left before:transition-transform before:duration-500 before:ease-out
+          hover:before:scale-x-100 hover:text-gray-900">
+          <span className="relative z-10">Explore Collection</span>
+        </button>
+      </div>
+    </Link>
+  </motion.div>
+
+  {/* Lab Grown Diamonds */}
+  <motion.div
+    initial={{ opacity: 0, x: 30 }}
+    whileInView={{ opacity: 1, x: 0 }}
+    viewport={{ once: true }}
+    transition={{ duration: 0.8 }}
+  >
+    <Link
+      to="/diamonds"
+      onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+      className="relative block h-[60vh] overflow-hidden group cursor-pointer"
+    >
+      <img
+        src="https://images.pexels.com/photos/14353725/pexels-photo-14353725.jpeg"
+        alt="Lab Grown Diamonds"
+        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+      />
+      <div className="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-all duration-300" />
+
+      <div className="absolute inset-0 flex flex-col items-center justify-end mb-10 text-white text-center px-6">
+        <h3 className="text-4xl md:text-4xl font-light mb-4">Lab Grown Diamonds</h3>
+        <p className="text-lg font-light mb-6">
+          Sustainable brilliance with certified quality
+        </p>
+
+        <button className="relative overflow-hidden border-2 border-white text-white px-8 py-3 text-xs tracking-widest transition-all duration-300
+          before:absolute before:inset-0 before:bg-white before:scale-x-0 before:origin-left before:transition-transform before:duration-500 before:ease-out
+          hover:before:scale-x-100 hover:text-gray-900">
+          <span className="relative z-10">Explore Collection</span>
+        </button>
+      </div>
+    </Link>
+  </motion.div>
 </div>
 
-                 </motion.div>
-     
-                 <motion.div
-                   initial={{ opacity: 0, x: 30 }}
-                   whileInView={{ opacity: 1, x: 0 }}
-                   viewport={{ once: true }}
-                   transition={{ duration: 0.8 }}
-                   className="relative h-[60vh] overflow-hidden group cursor-pointer"
-                 >
-                   <img
-                     src="https://images.pexels.com/photos/14353725/pexels-photo-14353725.jpeg"
-                     alt="Earrings"
-                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                   />
-                   <div className="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-all duration-300" />
-                   <div className="absolute inset-0 flex flex-col items-center justify-end mb-10 text-white text-center px-6">
-  <h3 className="text-4xl md:text-4xl font-light mb-4">
-    Lab Grown Diamonds
-  </h3>
-  <p className="text-lg font-light mb-6">
-    Sustainable brilliance with certified quality
-  </p>
-  {/* <button className="border-2 border-white px-8 py-3 text-xs tracking-widest hover:bg-white hover:text-gray-900 transition-all">
-    Explore Collection
-  </button> */}
-</div>
-
-                 </motion.div>
-               </div>
      
                {/* Jewelry Grid */}
                {/* <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
@@ -512,13 +529,15 @@ function FineJewelrySection() {
   viewport={{ once: true }}
   className="text-center"
 >
-  <button
-    className="relative overflow-hidden border-2 border-royalblue text-royalblue px-10 py-4 text-md tracking-widest transition-all duration-300
-    before:absolute before:inset-0 before:bg-royalblue before:scale-x-0 before:origin-left before:transition-transform before:duration-500 before:ease-out
-    hover:before:scale-x-100 hover:text-white"
-  >
-    <span className="relative z-10">View All Jewelry</span>
-  </button>
+<Link
+  to="/jewelry"
+  onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+  className="relative inline-block overflow-hidden border-2 border-royalblue text-royalblue px-10 py-4 text-md tracking-widest transition-all duration-300
+  before:absolute before:inset-0 before:bg-royalblue before:scale-x-0 before:origin-left before:transition-transform before:duration-500 before:ease-out
+  hover:before:scale-x-100 hover:text-white"
+>
+  <span className="relative z-10">View All Jewelry</span>
+</Link>
 </motion.div>
 
       {/* </div> */}
@@ -1117,95 +1136,95 @@ function FancyColorDiamonds() {
 }
 
 // Engagement Rings Carousel
+
  function EngagementRingsSection() {
+  const containerVariants = {
+    hidden: { opacity: 0, y: 30 },
+    show: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        staggerChildren: 0.15, // stagger for each ring
+        duration: 0.6,
+        ease: "easeOut",
+      },
+    },
+  };
+  
+  const itemVariants = {
+    hidden: { opacity: 0, y: 40 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+  };
   const rings = [
-    {
-      title: "Classic Solitaire",
-      // img: "https://images.pexels.com/photos/16219489/pexels-photo-16219489.jpeg",
-      img:classic,
-      desc: "Timeless elegance",
-    },
-    {
-      title: "Halo Setting",
-      // img: "https://images.pexels.com/photos/9080072/pexels-photo-9080072.jpeg",
-      img:halo,
-      desc: "Surrounded by brilliance",
-    },
-    {
-      title: "Three-Stone",
-      // img: "https://images.pexels.com/photos/27686743/pexels-photo-27686743.jpeg",
-      img:three_stone,
-      desc: "Past, present, future",
-    },
-    {
-      title: "Vintage Design",
-      // img: "https://images.pexels.com/photos/5737277/pexels-photo-5737277.jpeg",
-      img:vintage,
-      desc: "Romantic heritage",
-    },
-    {
-      title: "Modern Twist",
-      // img: "https://images.pexels.com/photos/32988536/pexels-photo-32988536.jpeg",
-      img:modern,
-      desc: "Contemporary sophistication",
-    },
-    {
-      title: "Pave Band",
-      // img: "https://images.pexels.com/photos/30206324/pexels-photo-30206324.jpeg",
-      img:pave,
-      desc: "Sparkling accents",
-    },
+    { title: "Classic Solitaire", img: classic, desc: "Timeless elegance" },
+    { title: "Halo Setting", img: halo, desc: "Surrounded by brilliance" },
+    { title: "Three-Stone", img: three_stone, desc: "Past, present, future" },
+    { title: "Vintage Design", img: vintage, desc: "Romantic heritage" },
+    { title: "Modern Twist", img: modern, desc: "Contemporary sophistication" },
+    { title: "Pave Band", img: pave, desc: "Sparkling accents" },
   ];
 
   return (
-    <section className="py-20 px-6 md:px-20 bg-yellow-50/30">
+    <motion.section
+      className="py-20 px-6 md:px-20 bg-yellow-50/30"
+      initial="hidden"
+      whileInView="show"
+      viewport={{ once: true, amount: 0.2 }}
+      variants={containerVariants}
+    >
+      {/* Header */}
       <div className="max-w-7xl mx-auto text-center mb-12">
         <motion.h2
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
+          variants={itemVariants}
           className="text-3xl md:text-4xl text-royalblue capitalize font-light mb-4 tracking-wide"
         >
           Engagement Ring Collection
         </motion.h2>
-        <p className="text-gray-600 text-lg max-w-3xl mx-auto">
-          Celebrate your love story with rings designed to capture timeless elegance and eternal commitment.
-        </p>
+        <motion.p
+          variants={itemVariants}
+          className="text-gray-600 text-lg max-w-3xl mx-auto"
+        >
+          Celebrate your love story with rings designed to capture timeless
+          elegance and eternal commitment.
+        </motion.p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-2">
+      {/* Grid */}
+      <motion.div
+        variants={containerVariants}
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-2"
+      >
         {rings.map((ring, idx) => (
           <motion.div
             key={idx}
-            className="relative overflow-hidden shadow-lg border bg-gradient-to-tr from-red-50 via-white to-blue-50  group cursor-pointer"
+            variants={itemVariants}
+            className="relative overflow-hidden shadow-lg border bg-gradient-to-tr from-red-50 via-white to-blue-50 group cursor-pointer"
           >
-            <div className="aspect-[3/4] 
- overflow-hidden">
+            <div className="aspect-[3/4] overflow-hidden">
               <img
                 src={ring.img}
                 alt={ring.title}
-                className="w-fit h-full  transition-transform duration-300 group-hover:scale-110"
+                className="w-fit h-full transition-transform duration-300 group-hover:scale-110"
               />
             </div>
 
-            {/* Dark overlay on hover */}
-            <div className="absolute inset-0 bg-black/40 opacity-0 transition-opacity duration-700"></div>
+            {/* Overlay */}
+            <div className="absolute inset-0 bg-black/40 opacity-0  transition-opacity duration-700"></div>
 
-            {/* Text overlay (always visible) */}
+            {/* Text */}
             <div className="absolute bottom-6 left-6 right-6 text-black text-center transition-colors duration-500">
-              <h3 className="text-xl uppercase font-light mb-1">{ring.title}</h3>
+              <h3 className="text-xl uppercase font-light mb-1">
+                {ring.title}
+              </h3>
               <p className="text-sm text-gray-900">{ring.desc}</p>
             </div>
           </motion.div>
         ))}
-      </div>
+      </motion.div>
 
       {/* Button */}
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
+        variants={itemVariants}
         className="text-center mt-16"
       >
         <button className="relative overflow-hidden border border-royalblue px-10 py-4 text-md tracking-widest text-royalblue transition-all duration-500 group">
@@ -1215,9 +1234,10 @@ function FancyColorDiamonds() {
           <span className="absolute inset-0 bg-royalblue translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-500 ease-out"></span>
         </button>
       </motion.div>
-    </section>
+    </motion.section>
   );
 }
+
 
 
 

@@ -32,7 +32,7 @@ const Header = () => {
   const [activeMenu, setActiveMenu] = useState(null);
   const [mobileExpandedMenu, setMobileExpandedMenu] = useState(null);
   const [index, setIndex] = useState(0);
-
+   const [isHovered, setIsHovered] = useState(false);
   // useEffect(() => {
   //   const interval = setInterval(() => {
   //     setIndex((prev) => (prev + 1) % messages.length);
@@ -69,10 +69,15 @@ const Header = () => {
   const [index, setIndex] = useState(0);
 
 const messages = [
-  "✨ FREE SHIPPING WORLDWIDE ✨",
-  "💎 PREMIUM QUALITY GUARANTEED 💎",
-  "⚡ NEW COLLECTION DROPPING SOON ⚡",
+  "💍 DISCOVER YOUR PERFECT SPARKLE 💍",
+  "✨ HANDCRAFTED ELEGANCE, MADE FOR YOU ✨",
+  "💎 SHINE BRIGHTER WITH EVERY PIECE 💎",
+  "🌎 FREE WORLDWIDE SHIPPING ON ALL ORDERS 🌎",
+  "⚡ LIMITED EDITION COLLECTION NOW LIVE ⚡",
+  "🎁 GIFT LUXURY. GIFT FOREVER. 🎁",
+  "💖 ETHICALLY SOURCED, BEAUTIFULLY DESIGNED 💖",
 ];
+
   useEffect(() => {
     const interval = setInterval(() => {
       setIndex((prev) => (prev + 1) % messages.length);
@@ -431,13 +436,21 @@ Fine Jewelry & Fancy Shape Diamonds
               
           <nav className="hidden mr-28 justify-center lg:flex items-center space-x-12 text-sm uppercase tracking-wider">
   {/* Static Home link (no hover effect) */}
-  <Link
-    to="/"
-    onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-    className="hover:font-medium text-gray-800 tracking-[0.1em] hover:text-gray-900 transition-colors inline-block"
-  >
-    Home
-  </Link>
+ <Link
+      to="/"
+      onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className="relative text-gray-800 tracking-[0.1em] transition-colors inline-block"
+    >
+      Home
+      <motion.div
+        className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gray-800 origin-left"
+        initial={{ scaleX: 0 }}
+        animate={{ scaleX: isHovered ? 1 : 0 }}
+        transition={{ duration: 0.3, ease: "easeOut" }}
+      />
+    </Link>
 
   {/* Dynamic menu links */}
   {Object.keys(menuData).map((key) => (
