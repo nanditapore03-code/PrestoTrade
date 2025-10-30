@@ -1192,7 +1192,7 @@ function FancyColorDiamonds() {
       {/* Grid */}
       <motion.div
         variants={containerVariants}
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-2"
+        className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-6 gap-2"
       >
         {rings.map((ring, idx) => (
           <motion.div
@@ -1212,11 +1212,11 @@ function FancyColorDiamonds() {
             <div className="absolute inset-0 bg-black/40 opacity-0  transition-opacity duration-700"></div>
 
             {/* Text */}
-            <div className="absolute bottom-6 left-6 right-6 text-black text-center transition-colors duration-500">
-              <h3 className="text-xl uppercase font-light mb-1">
+            <div className="absolute bottom-2 md:bottom-6 left-6 right-6 text-black text-center transition-colors duration-500">
+              <h3 className="text-md md:text-xl text-nowrap uppercase font-light mb-1">
                 {ring.title}
               </h3>
-              <p className="text-sm text-gray-900">{ring.desc}</p>
+              <p className="text-xs md:text-sm text-nowrap text-gray-900">{ring.desc}</p>
             </div>
           </motion.div>
         ))}
