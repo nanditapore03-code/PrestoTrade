@@ -628,7 +628,7 @@ const DiamondPage = () => {
 </div>
     
           {/* Shape Selection */}
-          <div className="flex gap-3 overflow-x-auto pb-2 ">
+          <div className="flex p-1 gap-3 overflow-x-auto pb-2 ">
             {availableShapes.map((shapeName) => {
               const lowerName = shapeName.toLowerCase();
               const shapeData = diamondData.shapes[lowerName]; // { img, symbol }
@@ -639,7 +639,7 @@ const DiamondPage = () => {
                   onClick={() => setSelectedShape(shapeName)}
                   className={`px-2 w-16 py-1.5 rounded-xl text-xs font-medium whitespace-nowrap transition-all flex flex-col items-center justify-center gap-2 ${
                     selectedShape.toLowerCase() === lowerName
-                      ? "bg-white text-black scale-105 shadow-md"
+                      ? "bg-white border border-gray-900 text-black scale-105 shadow-md"
                       : "bg-gray-50 text-gray-700 hover:bg-gray-100"
                   }`}
                 >
